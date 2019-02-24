@@ -58,7 +58,7 @@ type
   TViewNavigator = class(TvnHistory, IvnCore)
   private
     class var
-      FViews: TDictionary<string, TvnViewInfoBase>;
+      FViews: TDictionary<string, IvnViewInfoFluent>;
   private
     FParent: TvnControl;
     function GetParent: TvnControl;
@@ -139,7 +139,7 @@ end;
 
 class constructor TViewNavigator.Create;
 begin
-  FViews := TDictionary<string, TvnViewInfoBase>.Create();
+  FViews := TDictionary<string, IvnViewInfoFluent>.Create();
 end;
 
 class destructor TViewNavigator.Destroy;
