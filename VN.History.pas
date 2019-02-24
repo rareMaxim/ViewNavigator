@@ -40,7 +40,7 @@ type
     function Current: string;
 {$ENDREGION}
 {$REGION 'Navigation'}
-    procedure Navigate(const APageName: string);
+    procedure Navigate(const APageName: string); virtual;
     function Forward: string;
     function Back: string;
 {$ENDREGION}

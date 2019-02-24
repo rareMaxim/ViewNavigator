@@ -28,11 +28,13 @@ package ViewNavigatorPkg;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  fmx;
 
 contains
   VN.History in 'VN.History.pas',
   ViewNavigator in 'ViewNavigator.pas',
-  VN.ViewInfo.Base in 'VN.ViewInfo.Base.pas';
+  VN.ViewInfo.Base in 'VN.ViewInfo.Base.pas',
+  VN.Framwork.FMX in 'VN.Framwork.FMX.pas';
 
 end.

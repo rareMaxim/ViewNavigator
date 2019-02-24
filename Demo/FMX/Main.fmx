@@ -1,0 +1,47 @@
+object Form4: TForm4
+  Left = 0
+  Top = 0
+  Caption = 'Form4'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object lst1: TListBox
+    Align = Left
+    Size.Width = 225.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    OnItemClick = lst1ItemClick
+    Viewport.Width = 221.000000000000000000
+    Viewport.Height = 476.000000000000000000
+    object ListBoxItem1: TListBoxItem
+      TabOrder = 0
+      Text = 'view1'
+    end
+    object ListBoxItem2: TListBoxItem
+      Position.Y = 19.000000000000000000
+      TabOrder = 1
+      Text = 'view2'
+    end
+    object ListBoxItem3: TListBoxItem
+      Position.Y = 38.000000000000000000
+      TabOrder = 2
+      Text = 'view3'
+    end
+  end
+  object lyt1: TLayout
+    Align = Client
+    Size.Width = 415.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+  end
+end

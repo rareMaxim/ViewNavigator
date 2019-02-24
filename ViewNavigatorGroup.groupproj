@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{60A4262D-C9D3-4DFA-BC58-6287D6B9C067}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ViewNavigatorPkg.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Demo\FMX\ViewNavDemoFMX.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ViewNavigatorPkg">
+        <MSBuild Projects="ViewNavigatorPkg.dproj"/>
+    </Target>
+    <Target Name="ViewNavigatorPkg:Clean">
+        <MSBuild Projects="ViewNavigatorPkg.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ViewNavigatorPkg:Make">
+        <MSBuild Projects="ViewNavigatorPkg.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ViewNavDemoFMX">
+        <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj"/>
+    </Target>
+    <Target Name="ViewNavDemoFMX:Clean">
+        <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ViewNavDemoFMX:Make">
+        <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ViewNavigatorPkg;ViewNavDemoFMX"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ViewNavigatorPkg:Clean;ViewNavDemoFMX:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ViewNavigatorPkg:Make;ViewNavDemoFMX:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

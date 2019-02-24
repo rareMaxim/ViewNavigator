@@ -1,0 +1,13 @@
+object view3: Tview3
+  Size.Width = 320.000000000000000000
+  Size.Height = 240.000000000000000000
+  Size.PlatformDefault = False
+  object txt1: TText
+    Align = Client
+    Size.Width = 320.000000000000000000
+    Size.Height = 240.000000000000000000
+    Size.PlatformDefault = False
+    Text = 'View # 3'
+    TextSettings.Font.Size = 30.000000000000000000
+  end
+end
