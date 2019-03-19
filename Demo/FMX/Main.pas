@@ -24,6 +24,7 @@ type
     ListBoxItem1: TListBoxItem;
     ListBoxItem2: TListBoxItem;
     ListBoxItem3: TListBoxItem;
+    procedure FormDestroy(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure lst1ItemClick(const Sender: TCustomListBox; const Item: TListBoxItem);
   private
@@ -39,6 +40,11 @@ var
 implementation
 
 {$R *.fmx}
+
+procedure TForm4.FormDestroy(Sender: TObject);
+begin
+  FViewMng.Free;
+end;
 
 procedure TForm4.FormCreate(Sender: TObject);
 begin

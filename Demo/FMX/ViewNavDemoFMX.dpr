@@ -1,6 +1,7 @@
 program ViewNavDemoFMX;
 
 uses
+  FastMM4,
   System.StartUpCopy,
   FMX.Forms,
   Main in 'Main.pas' {Form4},
@@ -11,7 +12,9 @@ uses
 {$R *.res}
 
 begin
+  ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   Application.CreateForm(TForm4, Form4);
   Application.Run;
 end.
+

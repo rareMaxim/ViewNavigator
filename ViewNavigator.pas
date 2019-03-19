@@ -1,43 +1,29 @@
 unit ViewNavigator;
 
+// я был бухой когда писал этот код... и вообще это не мое - мне подкинули.
+
 interface
 
 {$SCOPEDENUMS ON}
 {$DEFINE ModeFMX}
 
 uses
+  FMX.Types,
   VN.History,
 {$IF Defined(ModeFMX)}
   VN.Framwork.FMX,
 {$ENDIF}
-  System.Generics.Collections;
+  System.Generics.Collections,
+  System.SysUtils;
 
 type
-  IvnCore = interface
-    ['{2326FC08-E0CC-46C9-833B-E7A5700EE7BE}']
-  end;
-
   TvnControlClass = class of TvnControl;
-
-  IvnViewInfo = interface
-    ['{EC33A966-2F9A-4CEC-B66B-1FD5F488C8DD}']
-    function GetName: string;
-  end;
 
   TvnCreationTime = (OnRegister, OnShow);
 
-  TvnDestroyTime = (OnHide, OnViewNavDestroy);
+  TvnDestroyTime = (OnViewNavDestroy, OnHide);
 
-  IvnViewInfoFluent = interface
-    ['{A4E26E22-4122-4193-96BA-201E37B93305}']
-    function SetName(const AName: string): IvnViewInfoFluent;
-    function GetName: string;
-    function SetCreationTime(ACreationTime: TvnCreationTime): IvnViewInfoFluent;
-    function SetDestroyTime(ADestroyTime: TvnDestroyTime): IvnViewInfoFluent;
-    function SetNavClass(ANavigationClass: TvnControlClass): IvnViewInfoFluent;
-  end;
-
-  TvnViewInfoBase = class(TInterfacedObject, IvnViewInfoFluent)
+  TvnViewInfoBase = class(TInterfacedObject)
   private
     FName: string;
     FCreationTime: TvnCreationTime;
@@ -45,39 +31,47 @@ type
     FNavigationClass: TvnControlClass;
     FControl: TvnControl;
     FIsCreated: Boolean;
+    FIsHaveParent: Boolean;
     FParent: TvnControl;
   protected
     procedure NotifySelfCreate;
     procedure NotifySelfShow;
+    procedure NotifySelfHide;
+    procedure NotifySelfDestroy;
     function IsCreated: Boolean;
-    procedure InitControl;
+    function IsHaveParent: Boolean;
+    procedure ViewCreate;
+    procedure ViewDestroy;
   public
     procedure Show(AParent: TvnControl);
-    constructor Create;
+    procedure Hide();
+    constructor Create(const AName: string; ANavClass: TvnControlClass;
+      ACreateAt: TvnCreationTime = TvnCreationTime.OnRegister; ADestroyAt:
+      TvnDestroyTime = TvnDestroyTime.OnViewNavDestroy);
     destructor Destroy; override;
-    function SetName(const AName: string): IvnViewInfoFluent;
-    function GetName: string;
-    function SetCreationTime(ACreationTime: TvnCreationTime): IvnViewInfoFluent;
-    function SetDestroyTime(ADestroyTime: TvnDestroyTime): IvnViewInfoFluent;
-    function SetNavClass(ANavigationClass: TvnControlClass): IvnViewInfoFluent;
+    property Name: string read FName write FName;
+    property NavigationClass: TvnControlClass read FNavigationClass write FNavigationClass;
+    property CreationTime: TvnCreationTime read FCreationTime write FCreationTime;
+    property DestroyTime: TvnDestroyTime read FDestroyTime write FDestroyTime;
   public
-    class function Init: IvnViewInfoFluent;
   end;
 
-  TViewNavigator = class(TvnHistory, IvnCore)
+  TViewNavigator = class(TvnHistory)
   private
     class var
-      FViews: TList<IvnViewInfoFluent>;
+      FViews: TList<TvnViewInfoBase>;
   private
     FParent: TvnControl;
     function GetParent: TvnControl;
     procedure SetParent(const Value: TvnControl);
-    function FindView(const AName: string): IvnViewInfoFluent;
+    function FindView(const AName: string; out Return: TvnViewInfoBase): Boolean;
   protected
   public
     class constructor Create;
     class destructor Destroy;
-    class function AddView: IvnViewInfoFluent;
+    class procedure AddView(const AName: string; ANavClass: TvnControlClass;
+      ACreateAt: TvnCreationTime = TvnCreationTime.OnRegister; ADestroyAt:
+      TvnDestroyTime = TvnDestroyTime.OnViewNavDestroy);
   public
     procedure Navigate(const APageName: string); override;
   published
@@ -86,113 +80,122 @@ type
 
 implementation
 
-uses
-  System.SysUtils;
-
 { TvnViewInfoFMX }
 
-constructor TvnViewInfoBase.Create;
+constructor TvnViewInfoBase.Create(const AName: string; ANavClass:
+  TvnControlClass; ACreateAt: TvnCreationTime = TvnCreationTime.OnRegister;
+  ADestroyAt: TvnDestroyTime = TvnDestroyTime.OnViewNavDestroy);
 begin
+  FName := AName;
+  FNavigationClass := ANavClass;
+  FCreationTime := ACreateAt;
+  FDestroyTime := ADestroyAt;
   NotifySelfCreate;
 end;
 
 destructor TvnViewInfoBase.Destroy;
 begin
-
+  NotifySelfDestroy;
   inherited;
 end;
 
-function TvnViewInfoBase.GetName: string;
+procedure TvnViewInfoBase.Hide;
 begin
-  Result := FName;
+  NotifySelfHide;
 end;
 
-class function TvnViewInfoBase.Init: IvnViewInfoFluent;
+procedure TvnViewInfoBase.ViewCreate;
 begin
-  Result := TvnViewInfoBase.Create;
+  FControl := TvnControl(FNavigationClass.Create(nil));
+  FIsCreated := True;
 end;
 
-procedure TvnViewInfoBase.InitControl;
+procedure TvnViewInfoBase.ViewDestroy;
 begin
-  FControl := TvnControlClass(FNavigationClass).Create(nil);
-  FControl.Parent := FParent;
+  FControl.Parent := nil;
+  FreeAndNil(FControl);
+  FIsCreated := False;
 end;
 
 function TvnViewInfoBase.IsCreated: Boolean;
 begin
-  Result := FIsCreated;
+  Result := FIsCreated and Assigned(FControl);
+end;
+
+function TvnViewInfoBase.IsHaveParent: Boolean;
+begin
+  Result := FIsHaveParent;
 end;
 
 procedure TvnViewInfoBase.NotifySelfCreate;
 begin
   if (FCreationTime = TvnCreationTime.OnRegister) and (not IsCreated) then
-    InitControl;
+    ViewCreate;
+end;
+
+procedure TvnViewInfoBase.NotifySelfDestroy;
+begin
+  if IsCreated and (not IsHaveParent) and (FDestroyTime = TvnDestroyTime.OnViewNavDestroy) then
+    ViewDestroy;
+end;
+
+procedure TvnViewInfoBase.NotifySelfHide;
+begin
+
 end;
 
 procedure TvnViewInfoBase.NotifySelfShow;
 begin
   if (FCreationTime = TvnCreationTime.OnShow) and (not IsCreated) then
-    InitControl;
-end;
-
-function TvnViewInfoBase.SetCreationTime(ACreationTime: TvnCreationTime): IvnViewInfoFluent;
-begin
-  FCreationTime := ACreationTime;
-  Result := Self;
-end;
-
-function TvnViewInfoBase.SetDestroyTime(ADestroyTime: TvnDestroyTime): IvnViewInfoFluent;
-begin
-  FDestroyTime := ADestroyTime;
-  Result := Self;
-end;
-
-function TvnViewInfoBase.SetName(const AName: string): IvnViewInfoFluent;
-begin
-  FName := AName;
-  Result := Self;
-end;
-
-function TvnViewInfoBase.SetNavClass(ANavigationClass: TvnControlClass): IvnViewInfoFluent;
-begin
-  FNavigationClass := ANavigationClass;
-  Result := Self;
+    ViewCreate;
 end;
 
 procedure TvnViewInfoBase.Show(AParent: TvnControl);
 begin
   FParent := AParent;
   NotifySelfShow;
-
+  FControl.Parent := FParent;
+  FIsHaveParent := True;
 end;
 
 { TViewNavigator }
 
-class function TViewNavigator.AddView: IvnViewInfoFluent;
+class procedure TViewNavigator.AddView(const AName: string; ANavClass:
+  TvnControlClass; ACreateAt: TvnCreationTime = TvnCreationTime.OnRegister;
+  ADestroyAt: TvnDestroyTime = TvnDestroyTime.OnViewNavDestroy);
+var
+  AInfo: TvnViewInfoBase;
 begin
-  { TODO -oOwner -cGeneral : ѕри совпадении имени вьюшки - нужно разрушить существующую и зарегистрировать новую }
-  Result := TvnViewInfoBase.Create;
-  FViews.Add(Result);
+  { TODO -oOwner -cGeneral : ѕри совпадении имени вьюшки - нужно разрушить существующую
+  и зарегистрировать новую }
+  AInfo := TvnViewInfoBase.Create(AName, ANavClass, ACreateAt, ADestroyAt);
+  FViews.Add(AInfo);
 end;
 
 class constructor TViewNavigator.Create;
 begin
-  FViews := TList<IvnViewInfoFluent>.Create();
+  FViews := TList<TvnViewInfoBase>.Create();
 end;
 
 class destructor TViewNavigator.Destroy;
-begin
-  FreeAndNil(FViews);
-end;
-
-function TViewNavigator.FindView(const AName: string): IvnViewInfoFluent;
 var
   I: Integer;
 begin
   for I := 0 to FViews.Count - 1 do
-    if FViews[I].GetName.Equals(AName) then
+    FViews[I].Free;
+  FreeAndNil(FViews);
+end;
+
+function TViewNavigator.FindView(const AName: string; out Return: TvnViewInfoBase): Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+  for I := 0 to FViews.Count - 1 do
+    if FViews[I].Name.Equals(AName) then
     begin
-      Result := FViews[I];
+      Return := FViews[I];
+      Result := True;
       Break;
     end;
 end;
@@ -203,9 +206,12 @@ begin
 end;
 
 procedure TViewNavigator.Navigate(const APageName: string);
+var
+  AView: TvnViewInfoBase;
 begin
   inherited Navigate(APageName);
-  (FindView(APageName) as TvnViewInfoBase).Show(FParent);
+  if FindView(APageName, AView) then
+    AView.Show(Parent);
 end;
 
 procedure TViewNavigator.SetParent(const Value: TvnControl);

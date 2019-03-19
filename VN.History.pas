@@ -34,16 +34,40 @@ type
     constructor Create;
     destructor Destroy; override;
 {$REGION 'Info'}
+    /// <summary>
+    ///   Количество элементов в истории
+    /// </summary>
     function Count: integer;
+    /// <summary>
+    ///   Возможно ли перейти на шаг вперед?
+    /// </summary>
     function CanForward: boolean;
+    /// <summary>
+    ///   Возможно ли вернуться на шаг назад?
+    /// </summary>
     function CanBack: boolean;
+    /// <summary>
+    ///   Текущий элемент истории
+    /// </summary>
     function Current: string;
 {$ENDREGION}
 {$REGION 'Navigation'}
+    /// <summary>
+    ///   Переход на новый элемент истории.
+    /// </summary>
     procedure Navigate(const APageName: string); virtual;
+    /// <summary>
+    ///   Перейти на шаг вперед
+    /// </summary>
     function Forward: string;
+    /// <summary>
+    ///   Вернуться на шаг назад
+    /// </summary>
     function Back: string;
 {$ENDREGION}
+    /// <summary>
+    ///
+    /// </summary>
     property Cursor: integer read GetCursor write SetCursor;
   end;
 
