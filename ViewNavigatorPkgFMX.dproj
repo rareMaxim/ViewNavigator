@@ -92,7 +92,10 @@
         <DCCReference Include="VN.History.pas"/>
         <DCCReference Include="ViewNavigator.pas"/>
         <DCCReference Include="VN.ViewInfo.Base.pas"/>
-        <DCCReference Include="VN.Framwork.FMX.pas"/>
+        <DCCReference Include="VN.Types.FMX.pas"/>
+        <DCCReference Include="ViewNavigator.FMX.pas"/>
+        <DCCReference Include="ViewNavigator.Abstract.pas"/>
+        <DCCReference Include="VN.Types.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

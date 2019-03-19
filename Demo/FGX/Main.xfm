@@ -1,0 +1,40 @@
+object Form5: TForm5
+  OnCreate = fgFormCreate
+  AlignmentChildren.Direction = Row
+  Size.Width = 616.000000000000000000
+  Size.Height = 412.000000000000000000
+  OnDestroy = fgFormDestroy
+  SavedSizeWidth = 616s
+  SavedSizeHeight = 412s
+  object fgListMenu1: TfgListMenu
+    Items = <
+      item
+        Title = 'View 1'
+        Name = 'view1'
+      end
+      item
+        Title = 'View 2'
+        Name = 'view2'
+      end>
+    SelectionColor = claNull
+    OnTapItem = fgListMenu1TapItem
+    Alignment.FlexGrow = 1.000000000000000000
+    PositionMode = Relative
+    RelativePosition.DefinedValues = []
+    Size.Width = 154.000000000000000000
+    Size.Height = 412.000000000000000000
+    SavedSizeWidth = 180s
+    SavedSizeHeight = 300s
+  end
+  object fgLayout1: TfgLayout
+    Alignment.FlexGrow = 3.000000000000000000
+    PositionMode = Relative
+    Position.X = 154.000000000000000000
+    RelativePosition.Left = 256.000000000000000000
+    RelativePosition.Top = 32.000000000000000000
+    Size.Width = 462.000000000000000000
+    Size.Height = 412.000000000000000000
+    SavedSizeWidth = 210s
+    SavedSizeHeight = 313s
+  end
+end

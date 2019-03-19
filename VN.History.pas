@@ -10,14 +10,14 @@ type
     ['{26FC3B45-81D5-4AE8-9871-84E75295EE87}']
     // public
 {$REGION 'Info'}
-    function Count: integer;
-    function CanForward: boolean;
-    function CanBack: boolean;
+    function Count: Integer;
+    function CanForward: Boolean;
+    function CanBack: Boolean;
     function Current: string;
 {$ENDREGION}
 {$REGION 'Navigation'}
     procedure Navigate(const APageName: string);
-    function Forward: string;
+    function forward: string;
     function Back: string;
 {$ENDREGION}
   end;
@@ -25,9 +25,9 @@ type
   TvnHistory = class(TInterfacedObject, IvnHistory)
   private
     FHistory: TList<string>;
-    FCursor: integer;
-    function GetCursor: integer;
-    procedure SetCursor(const Value: integer);
+    FCursor: Integer;
+    function GetCursor: Integer;
+    procedure SetCursor(const Value: Integer);
   protected
     procedure DoClearBeforeNavigate;
   public
@@ -35,17 +35,21 @@ type
     destructor Destroy; override;
 {$REGION 'Info'}
     /// <summary>
+    ///   Проверяет, есть ли такой элемент в истории
+    /// </summary>
+    function IsHistory(const AName: string): Boolean;
+    /// <summary>
     ///   Количество элементов в истории
     /// </summary>
-    function Count: integer;
+    function Count: Integer;
     /// <summary>
     ///   Возможно ли перейти на шаг вперед?
     /// </summary>
-    function CanForward: boolean;
+    function CanForward: Boolean;
     /// <summary>
     ///   Возможно ли вернуться на шаг назад?
     /// </summary>
-    function CanBack: boolean;
+    function CanBack: Boolean;
     /// <summary>
     ///   Текущий элемент истории
     /// </summary>
@@ -59,16 +63,16 @@ type
     /// <summary>
     ///   Перейти на шаг вперед
     /// </summary>
-    function Forward: string;
+    function forward: string; virtual;
     /// <summary>
     ///   Вернуться на шаг назад
     /// </summary>
-    function Back: string;
+    function Back: string; virtual;
 {$ENDREGION}
     /// <summary>
     ///
     /// </summary>
-    property Cursor: integer read GetCursor write SetCursor;
+    property Cursor: Integer read GetCursor write SetCursor;
   end;
 
 implementation
@@ -82,17 +86,17 @@ begin
   Result := Current;
 end;
 
-function TvnHistory.CanBack: boolean;
+function TvnHistory.CanBack: Boolean;
 begin
   Result := Cursor > 0;
 end;
 
-function TvnHistory.CanForward: boolean;
+function TvnHistory.CanForward: Boolean;
 begin
   Result := Cursor < FHistory.Count;
 end;
 
-function TvnHistory.Count: integer;
+function TvnHistory.Count: Integer;
 begin
   Result := FHistory.Count;
 end;
@@ -119,7 +123,7 @@ end;
 
 procedure TvnHistory.DoClearBeforeNavigate;
 var
-  I: integer;
+  I: Integer;
 begin
   if FCursor <= 0 then
     Exit;
@@ -127,7 +131,7 @@ begin
     FHistory.Delete(I);
 end;
 
-function TvnHistory.Forward: string;
+function TvnHistory.forward: string;
 begin
   if CanForward then
   begin
@@ -138,9 +142,14 @@ begin
     Result := '';
 end;
 
-function TvnHistory.GetCursor: integer;
+function TvnHistory.GetCursor: Integer;
 begin
   Result := FCursor;
+end;
+
+function TvnHistory.IsHistory(const AName: string): Boolean;
+begin
+  Result := FHistory.IndexOf(AName) > -1;
 end;
 
 procedure TvnHistory.Navigate(const APageName: string);
@@ -150,9 +159,10 @@ begin
   FHistory.Add(APageName);
 end;
 
-procedure TvnHistory.SetCursor(const Value: integer);
+procedure TvnHistory.SetCursor(const Value: Integer);
 begin
   FCursor := Value;
 end;
 
 end.
+

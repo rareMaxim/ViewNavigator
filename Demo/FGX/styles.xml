@@ -1,0 +1,10 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style name="AppTheme" parent="@android:Theme.Material.Light">
+		<!-- Не отображать тулбар -->
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<!-- Картинка сплеш скрина, которая будет отображаться при холодном старте приложения. До 
+		     непосредственно отображения первой формы. -->
+		<item name="android:windowBackground">@drawable/launch_screen</item>
+	</style>
+</resources>

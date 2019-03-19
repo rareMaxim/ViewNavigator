@@ -35,6 +35,9 @@ contains
   VN.History in 'VN.History.pas',
   ViewNavigator in 'ViewNavigator.pas',
   VN.ViewInfo.Base in 'VN.ViewInfo.Base.pas',
-  VN.Framwork.FMX in 'VN.Framwork.FMX.pas';
+  VN.Types.FMX in 'VN.Types.FMX.pas',
+  ViewNavigator.FMX in 'ViewNavigator.FMX.pas',
+  ViewNavigator.Abstract in 'ViewNavigator.Abstract.pas',
+  VN.Types in 'VN.Types.pas';
 
 end.

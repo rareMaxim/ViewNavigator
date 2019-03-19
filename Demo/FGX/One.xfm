@@ -1,0 +1,17 @@
+object View1: TView1
+  Size.Width = 360.000000000000000000
+  Size.Height = 590.000000000000000000
+  SavedSizeWidth = 360s
+  SavedSizeHeight = 590s
+  object fgLbl1: TfgLabel
+    Text = 'fgLbl1'
+    Position.X = 104.000000000000000000
+    Position.Y = 88.000000000000000000
+    RelativePosition.Left = 104.000000000000000000
+    RelativePosition.Top = 88.000000000000000000
+    Size.Width = 82.000000000000000000
+    Size.Height = 23.000000000000000000
+    SavedSizeWidth = 82s
+    SavedSizeHeight = 23s
+  end
+end
