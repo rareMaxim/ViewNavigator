@@ -1,6 +1,6 @@
-unit ViewNavigator;
+п»їunit ViewNavigator;
 
-// Я был бухой когда писал этот код... и вообще это не мое - мне подкинули.
+// РЇ Р±С‹Р» Р±СѓС…РѕР№ РєРѕРіРґР° РїРёСЃР°Р» СЌС‚РѕС‚ РєРѕРґ... Рё РІРѕРѕР±С‰Рµ СЌС‚Рѕ РЅРµ РјРѕРµ - РјРЅРµ РїРѕРґРєРёРЅСѓР»Рё.
 
 interface
 
@@ -15,23 +15,26 @@ uses
 type
   TvnCreateDestroyTime = VN.Types.TvnCreateDestroyTime;
 
-  TViewNavigator = class(TvnHistory)
+  TViewsStore = class
   private
     class var
       FViews: TObjectList<TvnViewInfo>;
-  private
-    FParent: TvnControl;
-    function GetParent: TvnControl;
-    procedure SetParent(const Value: TvnControl);
-    function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
-  protected
-    function Show(const AName: string): Boolean;
-    procedure Hide;
   public
     class constructor Create;
     class destructor Destroy;
     class procedure AddView(const AName: string; ANavClass: TvnControlClass;
       ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+    class function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
+  end;
+
+  TViewNavigator = class(TvnHistory)
+  private
+    FParent: TvnControl;
+    function GetParent: TvnControl;
+    procedure SetParent(const Value: TvnControl);
+  protected
+    function Show(const AName: string): Boolean;
+    procedure Hide;
   public
     procedure Navigate(const APageName: string); override;
     function Back: string; override;
@@ -45,45 +48,10 @@ implementation
 
 { TViewNavigator }
 
-class procedure TViewNavigator.AddView(const AName: string; ANavClass:
-  TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
-var
-  AInfo: TvnViewInfo;
-begin
-  { TODO -oOwner -cGeneral : При совпадении имени вьюшки - нужно разрушить существующую
-  и зарегистрировать новую }
-  AInfo := TvnViewInfo.Create(AName, ANavClass, ACreateDestroyTime);
-  FViews.Add(AInfo);
-end;
-
 function TViewNavigator.Back: string;
 begin
   Result := inherited Back;
   Show(Result);
-end;
-
-class constructor TViewNavigator.Create;
-begin
-  FViews := TObjectList<TvnViewInfo>.Create();
-end;
-
-class destructor TViewNavigator.Destroy;
-begin
-  FreeAndNil(FViews);
-end;
-
-function TViewNavigator.FindView(const AName: string; out Return: TvnViewInfo): Boolean;
-var
-  I: Integer;
-begin
-  Result := False;
-  for I := 0 to FViews.Count - 1 do
-    if FViews[I].Name.ToLower.Equals(AName.ToLower) then
-    begin
-      Return := FViews[I];
-      Result := True;
-      Break;
-    end;
 end;
 
 function TViewNavigator.forward: string;
@@ -101,7 +69,7 @@ procedure TViewNavigator.Hide;
 var
   AView: TvnViewInfo;
 begin
-  if FindView(Current, AView) then
+  if TViewsStore.FindView(Current, AView) then
     AView.Hide();
 end;
 
@@ -123,9 +91,46 @@ function TViewNavigator.Show(const AName: string): Boolean;
 var
   AView: TvnViewInfo;
 begin
-  Result := FindView(AName, AView);
+  Result := TViewsStore.FindView(AName, AView);
   if Result then
     AView.Show(Parent);
+end;
+
+{ TViewsStore }
+
+class procedure TViewsStore.AddView(const AName: string; ANavClass:
+  TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime);
+var
+  AInfo: TvnViewInfo;
+begin
+  { TODO -oOwner -cGeneral : РџСЂРё СЃРѕРІРїР°РґРµРЅРёРё РёРјРµРЅРё РІСЊСЋС€РєРё - РЅСѓР¶РЅРѕ СЂР°Р·СЂСѓС€РёС‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰СѓСЋ
+  Рё Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ РЅРѕРІСѓСЋ }
+  AInfo := TvnViewInfo.Create(AName, ANavClass, ACreateDestroyTime);
+  FViews.Add(AInfo);
+end;
+
+class constructor TViewsStore.Create;
+begin
+  FViews := TObjectList<TvnViewInfo>.Create();
+end;
+
+class destructor TViewsStore.Destroy;
+begin
+  FreeAndNil(FViews);
+end;
+
+class function TViewsStore.FindView(const AName: string; out Return: TvnViewInfo): Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+  for I := 0 to FViews.Count - 1 do
+    if FViews[I].Name.ToLower.Equals(AName.ToLower) then
+    begin
+      Return := FViews[I];
+      Result := True;
+      Break;
+    end;
 end;
 
 end.

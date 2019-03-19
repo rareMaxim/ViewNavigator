@@ -14,10 +14,14 @@ uses
   FGX.Layout,
   FGX.Layout.Types,
   FGX.Button.Types,
-  FGX.Button;
+  FGX.Button,
+  FGX.PageControl;
 
 type
   TView2 = class(TfgForm)
+    fgPageControl1: TfgPageControl;
+    fgPage1: TfgPage;
+    fgPage2: TfgPage;
     fgButton1: TfgButton;
   private
     { Private declarations }
@@ -40,7 +44,7 @@ uses
   ViewNavigator;
 
 initialization
-  TViewNavigator.AddView('view2', Tview2, TvnCreateDestroyTime.OnShowHide);
+  TViewsStore.AddView('view2', TView2, TvnCreateDestroyTime.OnShowHide);
 
 end.
 

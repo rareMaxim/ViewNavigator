@@ -143,8 +143,10 @@ procedure TvnViewInfo.Show(AParent: TvnControl);
 begin
   NotifySelfShow;
   Parent := AParent;
-  if FControl is TfgForm then
-    (FControl as TfgForm).Show;
+  FControl.Visible := True;
+  (*  Костыль для ФГХ формочек *)
+//  if FControl is TfgForm then
+//    (FControl as TfgForm).Show;
 end;
 
 end.

@@ -50,21 +50,13 @@ begin
 end;
 
 procedure TForm5.fgFormCreate(Sender: TObject);
-var
-  x: Integer;
 begin
-  x := 8989;
-  if x.ToString.Chars[1] = '9' then
-    ShowMessage('9!')
-  else
-    ShowMessage('((((');
   FViewMng := TViewNavigator.Create;
   FViewMng.Parent := fgLayout1;
 end;
 
 procedure TForm5.fgListMenu1TapItem(Sender: TObject; const AItem: TfgListMenuItem);
 begin
-
   FViewMng.Navigate(AItem.Name);
 end;
 
