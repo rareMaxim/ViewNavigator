@@ -1,4 +1,4 @@
-unit VN.History;
+п»їunit VN.History;
 
 interface
 
@@ -31,41 +31,41 @@ type
   protected
     procedure DoClearBeforeNavigate;
   public
-    constructor Create;
+    constructor Create; virtual;
     destructor Destroy; override;
 {$REGION 'Info'}
     /// <summary>
-    ///   Проверяет, есть ли такой элемент в истории
+    /// РџСЂРѕРІРµСЂСЏРµС‚, РµСЃС‚СЊ Р»Рё С‚Р°РєРѕР№ СЌР»РµРјРµРЅС‚ РІ РёСЃС‚РѕСЂРёРё
     /// </summary>
     function IsHistory(const AName: string): Boolean;
     /// <summary>
-    ///   Количество элементов в истории
+    /// РљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РёСЃС‚РѕСЂРёРё
     /// </summary>
     function Count: Integer;
     /// <summary>
-    ///   Возможно ли перейти на шаг вперед?
+    /// Р’РѕР·РјРѕР¶РЅРѕ Р»Рё РїРµСЂРµР№С‚Рё РЅР° С€Р°Рі РІРїРµСЂРµРґ?
     /// </summary>
     function CanForward: Boolean;
     /// <summary>
-    ///   Возможно ли вернуться на шаг назад?
+    /// Р’РѕР·РјРѕР¶РЅРѕ Р»Рё РІРµСЂРЅСѓС‚СЊСЃСЏ РЅР° С€Р°Рі РЅР°Р·Р°Рґ?
     /// </summary>
     function CanBack: Boolean;
     /// <summary>
-    ///   Текущий элемент истории
+    /// РўРµРєСѓС‰РёР№ СЌР»РµРјРµРЅС‚ РёСЃС‚РѕСЂРёРё
     /// </summary>
     function Current: string;
 {$ENDREGION}
 {$REGION 'Navigation'}
     /// <summary>
-    ///   Переход на новый элемент истории.
+    /// РџРµСЂРµС…РѕРґ РЅР° РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ РёСЃС‚РѕСЂРёРё.
     /// </summary>
     procedure Navigate(const APageName: string); virtual;
     /// <summary>
-    ///   Перейти на шаг вперед
+    /// РџРµСЂРµР№С‚Рё РЅР° С€Р°Рі РІРїРµСЂРµРґ
     /// </summary>
     function forward: string; virtual;
     /// <summary>
-    ///   Вернуться на шаг назад
+    /// Р’РµСЂРЅСѓС‚СЊСЃСЏ РЅР° С€Р°Рі РЅР°Р·Р°Рґ
     /// </summary>
     function Back: string; virtual;
 {$ENDREGION}
@@ -165,4 +165,3 @@ begin
 end;
 
 end.
-

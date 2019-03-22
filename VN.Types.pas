@@ -22,7 +22,7 @@ type
     FIsHaveParent: Boolean;
     FParent: TvnControl;
     procedure SetParent(const Value: TvnControl);
-  protected
+  public
     procedure NotifySelfCreate;
     procedure NotifySelfShow;
     procedure NotifySelfHide;
@@ -70,7 +70,7 @@ begin
   FName := AName;
   FNavigationClass := ANavClass;
   FCreateDestroyTime := ACreateDestroyTime;
-  NotifySelfCreate;
+  Hide;
 end;
 
 destructor TvnViewInfo.Destroy;

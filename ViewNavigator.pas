@@ -17,14 +17,16 @@ type
 
   TViewsStore = class
   private
-    class var
-      FViews: TObjectList<TvnViewInfo>;
+    class var FViews: TObjectList<TvnViewInfo>;
   public
+    class procedure ViewsInitializ;
     class constructor Create;
     class destructor Destroy;
     class procedure AddView(const AName: string; ANavClass: TvnControlClass;
-      ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
-    class function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
+      ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.
+      OnShowHide);
+    class function FindView(const AName: string;
+      out Return: TvnViewInfo): Boolean;
   end;
 
   TViewNavigator = class(TvnHistory)
@@ -39,12 +41,12 @@ type
     procedure Navigate(const APageName: string); override;
     function Back: string; override;
     function forward: string; override;
+    constructor Create; override;
   published
     property Parent: TvnControl read GetParent write SetParent;
   end;
 
 implementation
-
 
 { TViewNavigator }
 
@@ -52,6 +54,12 @@ function TViewNavigator.Back: string;
 begin
   Result := inherited Back;
   Show(Result);
+end;
+
+constructor TViewNavigator.Create;
+begin
+  inherited;
+  TViewsStore.ViewsInitializ;
 end;
 
 function TViewNavigator.forward: string;
@@ -98,13 +106,13 @@ end;
 
 { TViewsStore }
 
-class procedure TViewsStore.AddView(const AName: string; ANavClass:
-  TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime);
+class procedure TViewsStore.AddView(const AName: string;
+  ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime);
 var
   AInfo: TvnViewInfo;
 begin
   { TODO -oOwner -cGeneral : При совпадении имени вьюшки - нужно разрушить существующую
-  и зарегистрировать новую }
+    и зарегистрировать новую }
   AInfo := TvnViewInfo.Create(AName, ANavClass, ACreateDestroyTime);
   FViews.Add(AInfo);
 end;
@@ -119,7 +127,8 @@ begin
   FreeAndNil(FViews);
 end;
 
-class function TViewsStore.FindView(const AName: string; out Return: TvnViewInfo): Boolean;
+class function TViewsStore.FindView(const AName: string;
+  out Return: TvnViewInfo): Boolean;
 var
   I: Integer;
 begin
@@ -133,5 +142,12 @@ begin
     end;
 end;
 
-end.
+class procedure TViewsStore.ViewsInitializ;
+var
+  I: Integer;
+begin
+  for I := 0 to FViews.Count - 1 do
+    FViews[I].NotifySelfCreate();
+end;
 
+end.
