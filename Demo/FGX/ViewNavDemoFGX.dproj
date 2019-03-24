@@ -271,14 +271,8 @@
                 </DeployFile>
                 <DeployFile LocalName="$(FGX)\Libs\Common\Android\dex\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
                     <Platform Name="Android">
+                        <Enabled>false</Enabled>
                         <RemoteName>classes.dex</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher_round.png" Configuration="Release" Class="Android_LauncherRoundIcon72">
-                    <Platform Name="Android">
-                        <RemoteDir>res\mipmap-hdpi\</RemoteDir>
-                        <RemoteName>ic_launcher_round.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -286,6 +280,13 @@
                     <Platform Name="Android">
                         <RemoteDir>res\drawable-hdpi\</RemoteDir>
                         <RemoteName>splash_image.9.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher_round.png" Configuration="Release" Class="Android_LauncherRoundIcon72">
+                    <Platform Name="Android">
+                        <RemoteDir>res\mipmap-hdpi\</RemoteDir>
+                        <RemoteName>ic_launcher_round.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -374,13 +375,6 @@
                 </DeployFile>
                 <DeployFile LocalName="$(NDKBasePath)\prebuilt\android-arm\gdbserver\gdbserver" Configuration="Debug" Class="AndroidGDBServer">
                     <Platform Name="Android">
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(FGX)\Libs\Common\Android\dex\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
-                    <Platform Name="Android">
-                        <Enabled>false</Enabled>
-                        <RemoteName>classes.dex</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

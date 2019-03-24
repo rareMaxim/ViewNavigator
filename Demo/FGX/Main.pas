@@ -63,8 +63,7 @@ end;
 procedure TForm5.fgnvgtnbr1ActionButtonTap(const Sender: TObject; const AButton:
   TfgNavigationBarButton);
 begin
-  FViewMng.Navigate(AButton.Title);
-  FViewMng.SendData(AButton.Title, AButton.Title);
+  FViewMng.Navigate(AButton.Title, Format('data: %s', [AButton.Title]));
 end;
 
 end.

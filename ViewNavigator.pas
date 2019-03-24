@@ -18,6 +18,8 @@ type
 
   IvnDataView = VN.Types.IvnDataView;
 
+  EViewNavigator = class(Exception);
+
   TViewsStore = class
   private
     class var
@@ -37,11 +39,11 @@ type
     function GetParent: TvnControl;
     procedure SetParent(const Value: TvnControl);
   protected
-    function Show(const AName: string): Boolean;
+    procedure Show(const AName: string);
     procedure Hide;
   public
-    procedure Navigate(const APageName: string); override;
-    procedure SendData(const APageName: string; const AData: TValue);
+    procedure Navigate(const APageName: string); override; overload;
+    procedure Navigate(const APageName: string; const AData: TValue); overload;
     function Back: string; override;
     function forward: string; override;
     constructor Create; override;
@@ -84,6 +86,19 @@ begin
     AView.Hide();
 end;
 
+procedure TViewNavigator.Navigate(const APageName: string; const AData: TValue);
+var
+  LView: TvnViewInfo;
+  LDataView: IvnDataView;
+begin
+
+  if TViewsStore.FindView(APageName, LView) then
+  begin
+    if Supports(LView.Control, IvnDataView, LDataView) then
+      LDataView.DataReceive(AData);
+  end;
+end;
+
 procedure TViewNavigator.Navigate(const APageName: string);
 begin
   if APageName = Current then
@@ -93,30 +108,19 @@ begin
   Show(APageName);
 end;
 
-procedure TViewNavigator.SendData(const APageName: string; const AData: TValue);
-var
-  LView: TvnViewInfo;
-  LDataView: IvnDataView;
-begin
-  if TViewsStore.FindView(APageName, LView) then
-  begin
-    if Supports(LView.Control, IvnDataView, LDataView) then
-      LDataView.DataReceive(AData);
-  end;
-end;
-
 procedure TViewNavigator.SetParent(const Value: TvnControl);
 begin
   FParent := Value;
 end;
 
-function TViewNavigator.Show(const AName: string): Boolean;
+procedure TViewNavigator.Show(const AName: string);
 var
   AView: TvnViewInfo;
 begin
-  Result := TViewsStore.FindView(AName, AView);
-  if Result then
-    AView.Show(Parent);
+  if TViewsStore.FindView(AName, AView) then
+    AView.Show(Parent)
+  else
+    raise EViewNavigator.CreateFmt('Cant find view by name: %s', [AName]);
 end;
 
 { TViewsStore }
@@ -157,7 +161,7 @@ class procedure TViewsStore.ViewsInitialize;
 var
   LViewInfo: TvnViewInfo;
 begin
-  for LViewInfo in FViews do
+  for LViewInfo in FViews.Values do
     LViewInfo.NotifySelfCreate();
 end;
 
