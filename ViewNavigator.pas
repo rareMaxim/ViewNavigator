@@ -42,7 +42,7 @@ type
     procedure Show(const AName: string);
     procedure Hide;
   public
-    procedure Navigate(const APageName: string); override; overload;
+    procedure Navigate(const APageName: string); overload; override;
     procedure Navigate(const APageName: string; const AData: TValue); overload;
     function Back: string; override;
     function forward: string; override;
@@ -91,7 +91,7 @@ var
   LView: TvnViewInfo;
   LDataView: IvnDataView;
 begin
-
+  Navigate(APageName);
   if TViewsStore.FindView(APageName, LView) then
   begin
     if Supports(LView.Control, IvnDataView, LDataView) then

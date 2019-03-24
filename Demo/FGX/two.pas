@@ -44,7 +44,7 @@ uses
   ViewNavigator;
 
 initialization
-  TViewsStore.AddView('view2', TView2, TvnCreateDestroyTime.OnShowHide);
+  TViewsStore.AddView('view2', TView2, TvnCreateDestroyTime.OnCreateDestroy);
 
 end.
 
