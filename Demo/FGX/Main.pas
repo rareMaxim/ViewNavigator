@@ -17,11 +17,13 @@ uses
   FGX.ListMenu.Types,
   FGX.ListMenu,
   FGX.NavigationBar.Types,
-  FGX.NavigationBar;
+  FGX.NavigationBar, FGX.PageControl;
 
 type
   TForm5 = class(TfgForm)
     fgnvgtnbr1: TfgNavigationBar;
+    fgpgcntrl1: TfgPageControl;
+    fgpg1: TfgPage;
     procedure fgFormDestroy(Sender: TObject);
     procedure fgFormCreate(Sender: TObject);
     procedure fgnvgtnbr1ActionButtonTap(const Sender: TObject; const AButton:
@@ -54,7 +56,7 @@ end;
 procedure TForm5.fgFormCreate(Sender: TObject);
 begin
   FViewMng := TViewNavigator.Create;
-  FViewMng.Parent := fgLayout1;
+  FViewMng.Parent := fgpg1;
 end;
 
 procedure TForm5.fgnvgtnbr1ActionButtonTap(const Sender: TObject; const AButton:

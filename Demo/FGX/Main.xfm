@@ -26,4 +26,23 @@ object Form5: TForm5
     SavedSizeWidth = 250s
     SavedSizeHeight = 80s
   end
+  object fgpgcntrl1: TfgPageControl
+    PageIndex = 0
+    Alignment.FlexGrow = 1.000000000000000000
+    PositionMode = Relative
+    Position.Y = 80.000000000000000000
+    RelativePosition.Left = 216.000000000000000000
+    RelativePosition.Top = 184.000000000000000000
+    Size.Width = 616.000000000000000000
+    Size.Height = 332.000000000000000000
+    SavedSizeWidth = 360s
+    SavedSizeHeight = 300s
+    object fgpg1: TfgPage
+      Title = 'Page1'
+      Size.Width = 616.000000000000000000
+      Size.Height = 276.000000000000000000
+      SavedSizeWidth = 616s
+      SavedSizeHeight = 276s
+    end
+  end
 end
