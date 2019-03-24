@@ -21,9 +21,9 @@ type
   TViewsStore = class
   private
     class var
-      FViews: TObjectList<TvnViewInfo>;
+      FViews: TObjectDictionary<string, TvnViewInfo>;
   public
-    class procedure ViewsInitializ;
+    class procedure ViewsInitialize;
     class constructor Create;
     class destructor Destroy;
     class procedure AddView(const AName: string; ANavClass: TvnControlClass;
@@ -62,7 +62,7 @@ end;
 constructor TViewNavigator.Create;
 begin
   inherited;
-  TViewsStore.ViewsInitializ;
+  TViewsStore.ViewsInitialize;
 end;
 
 function TViewNavigator.forward: string;
@@ -86,7 +86,7 @@ end;
 
 procedure TViewNavigator.Navigate(const APageName: string);
 begin
-  if APageName = inherited Current then
+  if APageName = Current then
     Exit;
   Hide();
   inherited Navigate(APageName);
@@ -128,13 +128,13 @@ var
 begin
   { TODO -oOwner -cGeneral : При совпадении имени вьюшки - нужно разрушить существующую
     и зарегистрировать новую }
-  AInfo := TvnViewInfo.Create(AName, ANavClass, ACreateDestroyTime);
-  FViews.Add(AInfo);
+  AInfo := TvnViewInfo.Create(AName.ToLower, ANavClass, ACreateDestroyTime);
+  FViews.Add(AInfo.Name, AInfo);
 end;
 
 class constructor TViewsStore.Create;
 begin
-  FViews := TObjectList<TvnViewInfo>.Create();
+  FViews := TObjectDictionary<string, TvnViewInfo>.Create();
 end;
 
 class destructor TViewsStore.Destroy;
@@ -145,24 +145,20 @@ end;
 class function TViewsStore.FindView(const AName: string; out Return: TvnViewInfo):
   Boolean;
 var
-  I: Integer;
+  LLoweredName: string;
 begin
-  Result := False;
-  for I := 0 to FViews.Count - 1 do
-    if FViews[I].Name.ToLower.Equals(AName.ToLower) then
-    begin
-      Return := FViews[I];
-      Result := True;
-      Break;
-    end;
+  LLoweredName := AName.ToLower;
+  Result := FViews.ContainsKey(LLoweredName);
+  if Result then
+    Return := FViews[LLoweredName];
 end;
 
-class procedure TViewsStore.ViewsInitializ;
+class procedure TViewsStore.ViewsInitialize;
 var
-  I: Integer;
+  LViewInfo: TvnViewInfo;
 begin
-  for I := 0 to FViews.Count - 1 do
-    FViews[I].NotifySelfCreate();
+  for LViewInfo in FViews do
+    LViewInfo.NotifySelfCreate();
 end;
 
 end.
