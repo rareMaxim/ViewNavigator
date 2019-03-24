@@ -10,23 +10,25 @@ uses
   VN.History,
   VN.Types,
   System.Generics.Collections,
+  System.Rtti,
   System.SysUtils;
 
 type
   TvnCreateDestroyTime = VN.Types.TvnCreateDestroyTime;
 
+  IvnDataView = VN.Types.IvnDataView;
+
   TViewsStore = class
   private
-    class var FViews: TObjectList<TvnViewInfo>;
+    class var
+      FViews: TObjectList<TvnViewInfo>;
   public
     class procedure ViewsInitializ;
     class constructor Create;
     class destructor Destroy;
     class procedure AddView(const AName: string; ANavClass: TvnControlClass;
-      ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.
-      OnShowHide);
-    class function FindView(const AName: string;
-      out Return: TvnViewInfo): Boolean;
+      ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+    class function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
   end;
 
   TViewNavigator = class(TvnHistory)
@@ -39,6 +41,7 @@ type
     procedure Hide;
   public
     procedure Navigate(const APageName: string); override;
+    procedure SendData(const APageName: string; const AData: TValue);
     function Back: string; override;
     function forward: string; override;
     constructor Create; override;
@@ -64,7 +67,7 @@ end;
 
 function TViewNavigator.forward: string;
 begin
-  Result := inherited Back;
+  Result := inherited forward;
   Show(Result);
 end;
 
@@ -90,6 +93,18 @@ begin
   Show(APageName);
 end;
 
+procedure TViewNavigator.SendData(const APageName: string; const AData: TValue);
+var
+  LView: TvnViewInfo;
+  LDataView: IvnDataView;
+begin
+  if TViewsStore.FindView(APageName, LView) then
+  begin
+    if Supports(LView.Control, IvnDataView, LDataView) then
+      LDataView.DataReceive(AData);
+  end;
+end;
+
 procedure TViewNavigator.SetParent(const Value: TvnControl);
 begin
   FParent := Value;
@@ -106,8 +121,8 @@ end;
 
 { TViewsStore }
 
-class procedure TViewsStore.AddView(const AName: string;
-  ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime);
+class procedure TViewsStore.AddView(const AName: string; ANavClass:
+  TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime);
 var
   AInfo: TvnViewInfo;
 begin
@@ -127,8 +142,8 @@ begin
   FreeAndNil(FViews);
 end;
 
-class function TViewsStore.FindView(const AName: string;
-  out Return: TvnViewInfo): Boolean;
+class function TViewsStore.FindView(const AName: string; out Return: TvnViewInfo):
+  Boolean;
 var
   I: Integer;
 begin
@@ -151,3 +166,4 @@ begin
 end;
 
 end.
+

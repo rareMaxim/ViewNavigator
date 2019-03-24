@@ -3,6 +3,7 @@ unit VN.Types;
 interface
 
 uses
+  System.Rtti,
   VN.Types.FGX;
 
 type
@@ -11,6 +12,11 @@ type
   TvnControlClass = class of TvnControl;
 
   TvnCreateDestroyTime = (OnCreateDestroy, OnShowHide);
+
+  IvnDataView = interface
+    ['{E83C4096-6C79-4FB3-B23F-7D360A983A0D}']
+    procedure DataReceive(AData: TValue);
+  end;
 
   TvnViewInfo = class(TInterfacedObject)
   private
@@ -40,9 +46,11 @@ type
       ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
     destructor Destroy; override;
     property Name: string read FName write FName;
-    property NavigationClass: TvnControlClass read FNavigationClass write FNavigationClass;
+    property NavigationClass: TvnControlClass read FNavigationClass write
+      FNavigationClass;
     property CreateDestroyTime: TvnCreateDestroyTime read FCreateDestroyTime
       write FCreateDestroyTime;
+    property Control: TvnControl read FControl write FControl;
     property Parent: TvnControl read FParent write SetParent;
   public
   end;
@@ -50,7 +58,6 @@ type
 implementation
 
 uses
-  FGX.Forms,
   System.SysUtils;
 { TvnViewInfoFMX }
 
@@ -144,9 +151,6 @@ begin
   NotifySelfShow;
   Parent := AParent;
   FControl.Visible := True;
-  (*  Костыль для ФГХ формочек *)
-//  if FControl is TfgForm then
-//    (FControl as TfgForm).Show;
 end;
 
 end.

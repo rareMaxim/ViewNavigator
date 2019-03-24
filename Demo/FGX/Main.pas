@@ -17,7 +17,8 @@ uses
   FGX.ListMenu.Types,
   FGX.ListMenu,
   FGX.NavigationBar.Types,
-  FGX.NavigationBar, FGX.PageControl;
+  FGX.NavigationBar,
+  FGX.PageControl;
 
 type
   TForm5 = class(TfgForm)
@@ -63,6 +64,7 @@ procedure TForm5.fgnvgtnbr1ActionButtonTap(const Sender: TObject; const AButton:
   TfgNavigationBarButton);
 begin
   FViewMng.Navigate(AButton.Title);
+  FViewMng.SendData(AButton.Title, AButton.Title);
 end;
 
 end.
