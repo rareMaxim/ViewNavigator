@@ -15,15 +15,17 @@ uses
   FGX.Layout,
   FGX.Layout.Types,
   FGX.ListMenu.Types,
-  FGX.ListMenu;
+  FGX.ListMenu,
+  FGX.NavigationBar.Types,
+  FGX.NavigationBar;
 
 type
   TForm5 = class(TfgForm)
-    fgLayout1: TfgLayout;
-    fgListMenu1: TfgListMenu;
+    fgnvgtnbr1: TfgNavigationBar;
     procedure fgFormDestroy(Sender: TObject);
     procedure fgFormCreate(Sender: TObject);
-    procedure fgListMenu1TapItem(Sender: TObject; const AItem: TfgListMenuItem);
+    procedure fgnvgtnbr1ActionButtonTap(const Sender: TObject; const AButton:
+      TfgNavigationBarButton);
   private
     { Private declarations }
     FViewMng: TViewNavigator;
@@ -55,9 +57,10 @@ begin
   FViewMng.Parent := fgLayout1;
 end;
 
-procedure TForm5.fgListMenu1TapItem(Sender: TObject; const AItem: TfgListMenuItem);
+procedure TForm5.fgnvgtnbr1ActionButtonTap(const Sender: TObject; const AButton:
+  TfgNavigationBarButton);
 begin
-  FViewMng.Navigate(AItem.Name);
+  FViewMng.Navigate(AButton.Title);
 end;
 
 end.

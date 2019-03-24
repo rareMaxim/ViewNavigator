@@ -1,40 +1,29 @@
 object Form5: TForm5
+  Toolbar = fgnvgtnbr1
   OnCreate = fgFormCreate
-  AlignmentChildren.Direction = Row
   Size.Width = 616.000000000000000000
   Size.Height = 412.000000000000000000
   OnDestroy = fgFormDestroy
   SavedSizeWidth = 616s
   SavedSizeHeight = 412s
-  object fgListMenu1: TfgListMenu
-    Items = <
+  object fgnvgtnbr1: TfgNavigationBar
+    ActionButtons = <
       item
-        Title = 'View 1'
-        Name = 'view1'
+        Title = 'view1'
+        VisibilityMode = AlwaysVisible
       end
       item
-        Title = 'View 2'
-        Name = 'view2'
+        Title = 'view2'
       end>
-    SelectionColor = claNull
-    OnTapItem = fgListMenu1TapItem
-    Alignment.FlexGrow = 1.000000000000000000
-    PositionMode = Relative
-    RelativePosition.DefinedValues = []
-    Size.Width = 154.000000000000000000
-    Size.Height = 412.000000000000000000
-    SavedSizeWidth = 180s
-    SavedSizeHeight = 300s
-  end
-  object fgLayout1: TfgLayout
-    Alignment.FlexGrow = 3.000000000000000000
-    PositionMode = Relative
-    Position.X = 154.000000000000000000
-    RelativePosition.Left = 256.000000000000000000
-    RelativePosition.Top = 32.000000000000000000
-    Size.Width = 462.000000000000000000
-    Size.Height = 412.000000000000000000
-    SavedSizeWidth = 210s
-    SavedSizeHeight = 313s
+    ButtonsOptions.IconTintColor = claNull
+    Title = 'fgnvgtnbr1'
+    OnActionButtonTap = fgnvgtnbr1ActionButtonTap
+    Alignment.AlignSelf = Stretch
+    RelativePosition.Left = 0.000000000000000000
+    RelativePosition.Top = 0.000000000000000000
+    Size.Width = 616.000000000000000000
+    Size.Height = 80.000000000000000000
+    SavedSizeWidth = 250s
+    SavedSizeHeight = 80s
   end
 end
