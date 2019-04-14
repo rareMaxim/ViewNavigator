@@ -4,6 +4,7 @@ interface
 
 uses
   VN.Types,
+  VN.Types.Attributes,
   VN.Types.ViewNavigatorInfo,
   System.Generics.Collections;
 
@@ -17,7 +18,6 @@ type
     class constructor Create;
     class destructor Destroy;
     class procedure AddView(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
-
     class function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
   end;
 
@@ -62,7 +62,7 @@ class procedure TViewsStore.ViewsInitialize;
 var
   LViewInfo: TvnViewInfo;
 begin
-
+  TvnAttributeFinder.Find;
   for LViewInfo in FViews.Values do
     LViewInfo.NotifySelfCreate();
 end;

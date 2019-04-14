@@ -41,8 +41,7 @@ type
 
 implementation
 
-uses
-  VN.Types.Attributes;
+
 
 { TViewNavigator }
 
@@ -55,7 +54,6 @@ end;
 constructor TViewNavigator.Create;
 begin
   inherited;
-  TvnTest.Test;
   TViewsStore.ViewsInitialize;
 end;
 

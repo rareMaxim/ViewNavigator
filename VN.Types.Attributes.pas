@@ -16,8 +16,8 @@ type
   end;
 
 type
-  TvnTest = class
-    class procedure Test;
+  TvnAttributeFinder = class
+    class procedure Find;
   end;
 
 implementation
@@ -35,7 +35,7 @@ end;
 
 { TvnTest }
 
-class procedure TvnTest.Test;
+class procedure TvnAttributeFinder.Find;
 var
   Ctx: TRttiContext;
   CType: TRttiType;
