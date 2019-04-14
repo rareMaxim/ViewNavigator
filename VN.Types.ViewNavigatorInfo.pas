@@ -81,7 +81,7 @@ end;
 
 procedure TvnViewInfo.ViewDestroy;
 begin
-  FControl.Free; // or Dispose?
+  FControl.DisposeOf; // or Free?
   FControl := nil;
   FIsCreated := False;
 end;

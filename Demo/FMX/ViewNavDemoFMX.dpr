@@ -1,7 +1,7 @@
 program ViewNavDemoFMX;
 
 uses
-  FastMM4,
+
   System.StartUpCopy,
   FMX.Forms,
   Main in 'Main.pas' {Form4},

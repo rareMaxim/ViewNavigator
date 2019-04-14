@@ -20,6 +20,8 @@ type
 
   IvnDataView = VN.Types.IvnDataView;
 
+  TViewsStore = VN.Types.ViewStore.TViewsStore;
+
   TViewNavigator = class(TvnHistory)
   private
     FParent: TvnControl;

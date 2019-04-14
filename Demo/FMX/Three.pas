@@ -32,7 +32,7 @@ uses
 
 {$R *.fmx}
 initialization
-  TViewNavigator.AddView('view3', Tview3);
+  TViewsStore.AddView('view3', Tview3);
 
 end.
 

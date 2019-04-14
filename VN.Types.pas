@@ -5,10 +5,10 @@ interface
 uses
   System.SysUtils,
   System.Rtti,
-  VN.Types.FGX;
+  VN.Framworks;
 
 type
-  TvnControl = VN.Types.FGX.TvnControl;
+  TvnControl = VN.Framworks.TvnControl;
 
   TvnControlClass = class of TvnControl;
 

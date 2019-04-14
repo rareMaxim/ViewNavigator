@@ -28,16 +28,14 @@ package ViewNavigatorPkgFMX;
 {$IMPLICITBUILD ON}
 
 requires
-  rtl,
-  fmx;
+  rtl;
 
 contains
-  VN.History in 'VN.History.pas',
   ViewNavigator in 'ViewNavigator.pas',
-  VN.ViewInfo.Base in 'VN.ViewInfo.Base.pas',
-  VN.Types.FMX in 'VN.Types.FMX.pas',
-  ViewNavigator.FMX in 'ViewNavigator.FMX.pas',
-  ViewNavigator.Abstract in 'ViewNavigator.Abstract.pas',
-  VN.Types in 'VN.Types.pas';
+  VN.Framworks in 'VN.Framworks.pas',
+  VN.History in 'VN.History.pas',
+  VN.Types in 'VN.Types.pas',
+  VN.Types.ViewNavigatorInfo in 'VN.Types.ViewNavigatorInfo.pas',
+  VN.Types.ViewStore in 'VN.Types.ViewStore.pas';
 
 end.

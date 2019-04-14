@@ -6,7 +6,13 @@
         <Projects Include="ViewNavigatorPkgFGX.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="ViewNavigatorPkgFMX.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="Demo\FGX\ViewNavDemoFGX.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Demo\FMX\ViewNavDemoFMX.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,6 +32,15 @@
     <Target Name="ViewNavigatorPkgFGX:Make">
         <MSBuild Projects="ViewNavigatorPkgFGX.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ViewNavigatorPkgFMX">
+        <MSBuild Projects="ViewNavigatorPkgFMX.dproj"/>
+    </Target>
+    <Target Name="ViewNavigatorPkgFMX:Clean">
+        <MSBuild Projects="ViewNavigatorPkgFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ViewNavigatorPkgFMX:Make">
+        <MSBuild Projects="ViewNavigatorPkgFMX.dproj" Targets="Make"/>
+    </Target>
     <Target Name="ViewNavDemoFGX">
         <MSBuild Projects="Demo\FGX\ViewNavDemoFGX.dproj"/>
     </Target>
@@ -35,14 +50,23 @@
     <Target Name="ViewNavDemoFGX:Make">
         <MSBuild Projects="Demo\FGX\ViewNavDemoFGX.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ViewNavDemoFMX">
+        <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj"/>
+    </Target>
+    <Target Name="ViewNavDemoFMX:Clean">
+        <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ViewNavDemoFMX:Make">
+        <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="ViewNavigatorPkgFGX;ViewNavDemoFGX"/>
+        <CallTarget Targets="ViewNavigatorPkgFGX;ViewNavigatorPkgFMX;ViewNavDemoFGX;ViewNavDemoFMX"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="ViewNavigatorPkgFGX:Clean;ViewNavDemoFGX:Clean"/>
+        <CallTarget Targets="ViewNavigatorPkgFGX:Clean;ViewNavigatorPkgFMX:Clean;ViewNavDemoFGX:Clean;ViewNavDemoFMX:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="ViewNavigatorPkgFGX:Make;ViewNavDemoFGX:Make"/>
+        <CallTarget Targets="ViewNavigatorPkgFGX:Make;ViewNavigatorPkgFMX:Make;ViewNavDemoFGX:Make;ViewNavDemoFMX:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
