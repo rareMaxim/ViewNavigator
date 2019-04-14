@@ -92,6 +92,8 @@
         <DCCReference Include="VN.History.pas"/>
         <DCCReference Include="VN.Types.FGX.pas"/>
         <DCCReference Include="VN.Types.pas"/>
+        <DCCReference Include="VN.Types.ViewStore.pas"/>
+        <DCCReference Include="VN.Types.ViewNavigatorInfo.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -34,6 +34,9 @@ contains
   ViewNavigator in 'ViewNavigator.pas',
   VN.History in 'VN.History.pas',
   VN.Types.FGX in 'VN.Types.FGX.pas',
-  VN.Types in 'VN.Types.pas';
+  VN.Types in 'VN.Types.pas',
+  VN.Types.ViewStore in 'VN.Types.ViewStore.pas',
+  VN.Types.ViewNavigatorInfo in 'VN.Types.ViewNavigatorInfo.pas';
 
 end.
+

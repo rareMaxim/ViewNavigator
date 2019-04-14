@@ -9,6 +9,8 @@ interface
 uses
   VN.History,
   VN.Types,
+  VN.Types.ViewStore,
+  VN.Types.ViewNavigatorInfo,
   System.Generics.Collections,
   System.Rtti,
   System.SysUtils;
@@ -17,21 +19,6 @@ type
   TvnCreateDestroyTime = VN.Types.TvnCreateDestroyTime;
 
   IvnDataView = VN.Types.IvnDataView;
-
-  EViewNavigator = class(Exception);
-
-  TViewsStore = class
-  private
-    class var
-      FViews: TObjectDictionary<string, TvnViewInfo>;
-  public
-    class procedure ViewsInitialize;
-    class constructor Create;
-    class destructor Destroy;
-    class procedure AddView(const AName: string; ANavClass: TvnControlClass;
-      ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
-    class function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
-  end;
 
   TViewNavigator = class(TvnHistory)
   private
@@ -43,11 +30,10 @@ type
     procedure Hide;
   public
     procedure Navigate(const APageName: string); overload; override;
-    procedure Navigate(const APageName: string; const AData: TValue); overload;
+    procedure Navigate(const APageName: string; const AData: TValue); reintroduce; overload;
     function Back: string; override;
     function forward: string; override;
     constructor Create; override;
-  published
     property Parent: TvnControl read GetParent write SetParent;
   end;
 
@@ -83,7 +69,7 @@ var
   AView: TvnViewInfo;
 begin
   if TViewsStore.FindView(Current, AView) then
-    AView.Hide();
+    AView.HideView();
 end;
 
 procedure TViewNavigator.Navigate(const APageName: string; const AData: TValue);
@@ -118,51 +104,9 @@ var
   AView: TvnViewInfo;
 begin
   if TViewsStore.FindView(AName, AView) then
-    AView.Show(Parent)
+    AView.ShowView(Parent)
   else
     raise EViewNavigator.CreateFmt('Cant find view by name: %s', [AName]);
-end;
-
-{ TViewsStore }
-
-class procedure TViewsStore.AddView(const AName: string; ANavClass:
-  TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime);
-var
-  AInfo: TvnViewInfo;
-begin
-  { TODO -oOwner -cGeneral : При совпадении имени вьюшки - нужно разрушить существующую
-    и зарегистрировать новую }
-  AInfo := TvnViewInfo.Create(AName.ToLower, ANavClass, ACreateDestroyTime);
-  FViews.Add(AInfo.Name, AInfo);
-end;
-
-class constructor TViewsStore.Create;
-begin
-  FViews := TObjectDictionary<string, TvnViewInfo>.Create();
-end;
-
-class destructor TViewsStore.Destroy;
-begin
-  FreeAndNil(FViews);
-end;
-
-class function TViewsStore.FindView(const AName: string; out Return: TvnViewInfo):
-  Boolean;
-var
-  LLoweredName: string;
-begin
-  LLoweredName := AName.ToLower;
-  Result := FViews.ContainsKey(LLoweredName);
-  if Result then
-    Return := FViews[LLoweredName];
-end;
-
-class procedure TViewsStore.ViewsInitialize;
-var
-  LViewInfo: TvnViewInfo;
-begin
-  for LViewInfo in FViews.Values do
-    LViewInfo.NotifySelfCreate();
 end;
 
 end.
