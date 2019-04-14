@@ -43,8 +43,8 @@ begin
   TDialogService.ShowMessage(AData.AsString);
 end;
 
-initialization
-  TViewsStore.AddView('view1', Tview1);
+//initialization
+//  TViewsStore.AddView('view1', Tview1);
 
 end.
 

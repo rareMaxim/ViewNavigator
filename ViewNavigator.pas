@@ -41,6 +41,9 @@ type
 
 implementation
 
+uses
+  VN.Types.Attributes;
+
 { TViewNavigator }
 
 function TViewNavigator.Back: string;
@@ -52,6 +55,7 @@ end;
 constructor TViewNavigator.Create;
 begin
   inherited;
+  TvnTest.Test;
   TViewsStore.ViewsInitialize;
 end;
 

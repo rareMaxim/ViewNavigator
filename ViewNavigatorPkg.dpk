@@ -36,6 +36,7 @@ contains
   VN.History in 'VN.History.pas',
   VN.Types in 'VN.Types.pas',
   VN.Types.ViewNavigatorInfo in 'VN.Types.ViewNavigatorInfo.pas',
-  VN.Types.ViewStore in 'VN.Types.ViewStore.pas';
+  VN.Types.ViewStore in 'VN.Types.ViewStore.pas',
+  VN.Types.Attributes in 'VN.Types.Attributes.pas';
 
 end.

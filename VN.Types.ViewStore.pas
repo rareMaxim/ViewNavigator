@@ -17,6 +17,7 @@ type
     class constructor Create;
     class destructor Destroy;
     class procedure AddView(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+
     class function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
   end;
 
@@ -61,6 +62,7 @@ class procedure TViewsStore.ViewsInitialize;
 var
   LViewInfo: TvnViewInfo;
 begin
+
   for LViewInfo in FViews.Values do
     LViewInfo.NotifySelfCreate();
 end;

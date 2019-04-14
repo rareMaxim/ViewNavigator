@@ -10,7 +10,7 @@
             <Dependencies/>
         </Projects>
         <Projects Include="Demo\FMX\ViewNavDemoFMX.dproj">
-            <Dependencies/>
+            <Dependencies>ViewNavigatorPkg.dproj</Dependencies>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -38,13 +38,13 @@
     <Target Name="ViewNavDemoFGX:Make">
         <MSBuild Projects="Demo\FGX\ViewNavDemoFGX.dproj" Targets="Make"/>
     </Target>
-    <Target Name="ViewNavDemoFMX">
+    <Target Name="ViewNavDemoFMX" DependsOnTargets="ViewNavigatorPkg">
         <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj"/>
     </Target>
-    <Target Name="ViewNavDemoFMX:Clean">
+    <Target Name="ViewNavDemoFMX:Clean" DependsOnTargets="ViewNavigatorPkg:Clean">
         <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="ViewNavDemoFMX:Make">
+    <Target Name="ViewNavDemoFMX:Make" DependsOnTargets="ViewNavigatorPkg:Make">
         <MSBuild Projects="Demo\FMX\ViewNavDemoFMX.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
