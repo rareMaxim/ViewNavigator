@@ -54,7 +54,7 @@ end;
 
 procedure TForm4.lst1ItemClick(const Sender: TCustomListBox; const Item: TListBoxItem);
 begin
-  FViewMng.Navigate(Item.Text);
+  FViewMng.Navigate(Item.Text, Format('data: %s', [Item.Text]));
 end;
 
 end.

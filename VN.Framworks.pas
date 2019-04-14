@@ -9,8 +9,10 @@ interface
 uses
 {$IF Defined(FMX_APP)}
   FMX.Controls,
-{$ELSE}
+{$ELSE IF Defined(FGX_NATIVE)}
   FGX.Control,
+{$ELSE}
+
 {$ENDIF}
   System.SysUtils;
 
@@ -20,7 +22,7 @@ type
 {$ELSE IF Defined(FMX_APP)}
   TvnControl = TControl;
 {$ELSE}
-  //Error library config
+  TvnControl = TObject; //Error library config
 {$ENDIF}
 
 implementation

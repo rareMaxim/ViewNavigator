@@ -44,7 +44,7 @@ uses
 
 procedure TView1.DataReceive(AData: TValue);
 begin
-  ShowMessage(AData.AsString);
+  TfgDialogs.ShowMessage(AData.AsString);
 end;
 
 initialization
