@@ -22,7 +22,17 @@ type
 
   TViewsStore = VN.Types.ViewStore.TViewsStore;
 
-  TViewNavigator = class(TvnHistory)
+  IvnNavigator = interface(IvnHistory)
+    ['{699E29FA-9FC0-4392-923D-A2326CE78C55}']
+    function GetParent: TvnControl;
+    procedure SetParent(const Value: TvnControl);
+    // public
+    procedure Navigate(const APageName: string); overload;
+    procedure Navigate(const APageName: string; const AData: TValue); overload;
+    property Parent: TvnControl read GetParent write SetParent;
+  end;
+
+  TViewNavigator = class(TvnHistory, IvnNavigator)
   private
     FParent: TvnControl;
     function GetParent: TvnControl;
