@@ -47,7 +47,6 @@ begin
   try
     for CType in Ctx.GetTypes do
     begin
-      Writeln(CType.ToString);
       for CAttribute in CType.GetAttributes do
       begin
         if CAttribute is vnViewAttribute then
