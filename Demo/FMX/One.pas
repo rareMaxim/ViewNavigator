@@ -32,6 +32,7 @@ type
 implementation
 
 uses
+  Demo.Bootstrap,
   FMX.DialogService;
 
 {$R *.fmx}
@@ -44,7 +45,7 @@ begin
 end;
 
 initialization
-  TViewsStore.AddView('view1', Tview1);
+  TBootstrap.NavStore.AddView('view1', Tview1, TvnCreateDestroyTime.OnCreateDestroy);
 
 end.
 

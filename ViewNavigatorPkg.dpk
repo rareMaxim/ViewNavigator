@@ -28,6 +28,9 @@ package ViewNavigatorPkg;
 {$IMPLICITBUILD ON}
 
 requires
+{$IFDEF FMX_APP}
+  fmx,
+{$ENDIF}
   rtl;
 
 contains

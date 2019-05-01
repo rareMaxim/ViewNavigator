@@ -15,11 +15,15 @@ uses
   FGX.Control.Types,
   FGX.Layout,
   FGX.Layout.Types,
-  FGX.StaticLabel;
+  FGX.StaticLabel,
+  FGX.CollectionView;
 
 type
   TView1 = class(TfgForm, IvnDataView)
     fgLbl1: TfgLabel;
+    fgclctnvw1: TfgCollectionView;
+    function fgclctnvw1GetItemCount(Sender: TObject): Integer;
+    procedure fgclctnvw1BindItem(Sender: TObject; const AIndex: Integer; const AStyle: string; const AItem: TfgItemWrapper);
   private
     { Private declarations }
   public
@@ -35,6 +39,7 @@ implementation
 {$R *.xfm}
 
 uses
+  Demo.Bootstrap,
   System.SysUtils,
   FGX.Application,
   FGX.Dialogs,
@@ -47,8 +52,18 @@ begin
   TfgDialogs.ShowMessage(AData.AsString);
 end;
 
+procedure TView1.fgclctnvw1BindItem(Sender: TObject; const AIndex: Integer; const AStyle: string; const AItem: TfgItemWrapper);
+begin
+  AItem.GetControlByLookupName<TfgLabel>('123').Text := '123';
+end;
+
+function TView1.fgclctnvw1GetItemCount(Sender: TObject): Integer;
+begin
+  Result := 10;
+end;
+
 initialization
-  TViewsStore.AddView('view1', TView1, TvnCreateDestroyTime.OnShowHide);
+  TBootstrap.NavStore.AddView('view1', Tview1, TvnCreateDestroyTime.OnShowHide);
 
 end.
 

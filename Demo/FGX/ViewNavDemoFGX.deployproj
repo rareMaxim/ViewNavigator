@@ -4,23 +4,23 @@
         <ProjectFileVersion>12</ProjectFileVersion>
     </ProjectExtensions>
     <PropertyGroup>
-        <DeviceId Condition="'$(Platform)'=='Android'">8c91d16a7d24</DeviceId>
+        <DeviceId Condition="'$(Platform)'=='Android'">192.168.1.6:5555</DeviceId>
     </PropertyGroup>
     <ItemGroup Condition="'$(Platform)'=='Win32'"/>
     <ItemGroup Condition="'$(Platform)'=='Android'">
-        <DeployFile Include="$(FGX)\Libs\Common\Android\Debug\armeabi-v7a\libfb.so" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ViewNavDemoFGX\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libfb.so</RemoteName>
-            <DeployClass>FGX_YogaLibraryFb</DeployClass>
+        <DeployFile Include="styles.xml" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ViewNavDemoFGX\res\values\</RemoteDir>
+            <RemoteName>styles.xml</RemoteName>
+            <DeployClass>AndroidStyle</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="styles.xml" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ViewNavDemoFGX\res\values\</RemoteDir>
-            <RemoteName>styles.xml</RemoteName>
-            <DeployClass>AndroidStyle</DeployClass>
+        <DeployFile Include="$(FGX)\Libs\Common\Android\Release\armeabi-v7a\libfb.so" Condition="'$(Config)'=='Release'">
+            <RemoteDir>ViewNavDemoFGX\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libfb.so</RemoteName>
+            <DeployClass>FGX_YogaLibraryFb</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -116,10 +116,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(FGX)\Libs\Common\Android\Release\armeabi-v7a\libfb.so" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(FGX)\Libs\Common\Android\Release\armeabi-v7a\libyoga.so" Condition="'$(Config)'=='Release'">
             <RemoteDir>ViewNavDemoFGX\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libfb.so</RemoteName>
-            <DeployClass>FGX_YogaLibraryFb</DeployClass>
+            <RemoteName>libyoga.so</RemoteName>
+            <DeployClass>FGX_YogaLibrary</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -162,6 +162,15 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher_round.png" Condition="'$(Config)'=='Release'">
+            <RemoteDir>ViewNavDemoFGX\res\mipmap-hdpi\</RemoteDir>
+            <RemoteName>ic_launcher_round.png</RemoteName>
+            <DeployClass>Android_LauncherRoundIcon72</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="$(FGX)\Libs\Common\Android\Debug\dex\classes.dex" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ViewNavDemoFGX\classes\</RemoteDir>
             <RemoteName>classes.dex</RemoteName>
@@ -180,10 +189,10 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher_round.png" Condition="'$(Config)'=='Release'">
-            <RemoteDir>ViewNavDemoFGX\res\mipmap-hdpi\</RemoteDir>
+        <DeployFile Include="$(FGX)\Images\Android\mipmap-ldpi\ic_launcher_round.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ViewNavDemoFGX\res\mipmap-ldpi\</RemoteDir>
             <RemoteName>ic_launcher_round.png</RemoteName>
-            <DeployClass>Android_LauncherRoundIcon72</DeployClass>
+            <DeployClass>Android_LauncherRoundIcon36</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -194,15 +203,6 @@
             <RemoteName>ic_launcher.png</RemoteName>
             <DeployClass>Android_LauncherIcon72</DeployClass>
             <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(FGX)\Images\Android\mipmap-ldpi\ic_launcher_round.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ViewNavDemoFGX\res\mipmap-ldpi\</RemoteDir>
-            <RemoteName>ic_launcher_round.png</RemoteName>
-            <DeployClass>Android_LauncherRoundIcon36</DeployClass>
-            <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
@@ -316,7 +316,16 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="$(FGX)\Libs\Common\Android\Release\armeabi-v7a\libyoga.so" Condition="'$(Config)'=='Release'">
+        <DeployFile Include="$(FGX)\Libs\Common\Android\Debug\armeabi-v7a\libfb.so" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>ViewNavDemoFGX\library\lib\armeabi-v7a\</RemoteDir>
+            <RemoteName>libfb.so</RemoteName>
+            <DeployClass>FGX_YogaLibraryFb</DeployClass>
+            <Operation>0</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
+        <DeployFile Include="$(FGX)\Libs\Common\Android\Debug\armeabi-v7a\libyoga.so" Condition="'$(Config)'=='Debug'">
             <RemoteDir>ViewNavDemoFGX\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>libyoga.so</RemoteName>
             <DeployClass>FGX_YogaLibrary</DeployClass>
@@ -347,15 +356,6 @@
             <RemoteDir>ViewNavDemoFGX\res\values\</RemoteDir>
             <RemoteName>styles.xml</RemoteName>
             <DeployClass>AndroidStyle</DeployClass>
-            <Operation>0</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="$(FGX)\Libs\Common\Android\Debug\armeabi-v7a\libyoga.so" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>ViewNavDemoFGX\library\lib\armeabi-v7a\</RemoteDir>
-            <RemoteName>libyoga.so</RemoteName>
-            <DeployClass>FGX_YogaLibrary</DeployClass>
             <Operation>0</Operation>
             <LocalCommand/>
             <RemoteCommand/>

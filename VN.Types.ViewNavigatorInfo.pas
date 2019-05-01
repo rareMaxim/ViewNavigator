@@ -59,6 +59,7 @@ begin
   FNavigationClass := ANavClass;
   FCreateDestroyTime := ACreateDestroyTime;
   HideView;
+  NotifySelfCreate;
 end;
 
 destructor TvnViewInfo.Destroy;

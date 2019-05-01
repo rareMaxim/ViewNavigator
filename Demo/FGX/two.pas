@@ -37,6 +37,7 @@ implementation
 {$R *.xfm}
 
 uses
+  Demo.Bootstrap,
   System.SysUtils,
   FGX.Application,
   FGX.Dialogs,
@@ -44,7 +45,7 @@ uses
   ViewNavigator;
 
 initialization
-  TViewsStore.AddView('view2', TView2, TvnCreateDestroyTime.OnCreateDestroy);
+  TBootstrap.NavStore.AddView('view2', TView2, TvnCreateDestroyTime.OnShowHide);
 
 end.
 

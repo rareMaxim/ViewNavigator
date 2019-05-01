@@ -114,6 +114,7 @@
             <FormType>xfm</FormType>
             <DesignClass>TfgForm</DesignClass>
         </DCCReference>
+        <DCCReference Include="..\Demo.Bootstrap.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -140,17 +141,17 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="$(FGX)\Libs\Common\Android\armeabi-v7a\libfb.so" Configuration="Debug" Class="FGX_YogaLibraryFb">
-                    <Platform Name="Android">
-                        <RemoteDir>library\lib\armeabi-v7a\</RemoteDir>
-                        <RemoteName>libfb.so</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="styles.xml" Configuration="Debug" Class="AndroidStyle">
                     <Platform Name="Android">
                         <RemoteDir>res\values\</RemoteDir>
                         <RemoteName>styles.xml</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(FGX)\Libs\Common\Android\Release\armeabi-v7a\libfb.so" Configuration="Release" Class="FGX_YogaLibraryFb">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a\</RemoteDir>
+                        <RemoteName>libfb.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -223,10 +224,10 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(FGX)\Libs\Common\Android\armeabi-v7a\libfb.so" Configuration="Release" Class="FGX_YogaLibraryFb">
+                <DeployFile LocalName="$(FGX)\Libs\Common\Android\Release\armeabi-v7a\libyoga.so" Configuration="Release" Class="FGX_YogaLibrary">
                     <Platform Name="Android">
                         <RemoteDir>library\lib\armeabi-v7a\</RemoteDir>
-                        <RemoteName>libfb.so</RemoteName>
+                        <RemoteName>libyoga.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -270,17 +271,16 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(FGX)\Libs\Common\Android\dex\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
-                    <Platform Name="Android">
-                        <Enabled>false</Enabled>
-                        <RemoteName>classes.dex</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher_round.png" Configuration="Release" Class="Android_LauncherRoundIcon72">
                     <Platform Name="Android">
                         <RemoteDir>res\mipmap-hdpi\</RemoteDir>
                         <RemoteName>ic_launcher_round.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(FGX)\Libs\Common\Android\Debug\dex\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
+                    <Platform Name="Android">
+                        <RemoteName>classes.dex</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -291,17 +291,17 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher.png" Configuration="Debug" Class="Android_LauncherIcon72">
-                    <Platform Name="Android">
-                        <RemoteDir>res\mipmap-hdpi\</RemoteDir>
-                        <RemoteName>ic_launcher.png</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="$(FGX)\Images\Android\mipmap-ldpi\ic_launcher_round.png" Configuration="Debug" Class="Android_LauncherRoundIcon36">
                     <Platform Name="Android">
                         <RemoteDir>res\mipmap-ldpi\</RemoteDir>
                         <RemoteName>ic_launcher_round.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(FGX)\Images\Android\mipmap-hdpi\ic_launcher.png" Configuration="Debug" Class="Android_LauncherIcon72">
+                    <Platform Name="Android">
+                        <RemoteDir>res\mipmap-hdpi\</RemoteDir>
+                        <RemoteName>ic_launcher.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -379,6 +379,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="$(FGX)\Libs\Common\Android\Debug\dex\classes.dex" Configuration="Debug" Class="AndroidClassesDexFile">
+                    <Platform Name="Android">
+                        <Enabled>false</Enabled>
+                        <RemoteName>classes.dex</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(FGX)\Images\Android\mipmap-xhdpi\ic_launcher_round.png" Configuration="Release" Class="Android_LauncherRoundIcon96">
                     <Platform Name="Android">
                         <RemoteDir>res\mipmap-xhdpi\</RemoteDir>
@@ -386,7 +393,14 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="$(FGX)\Libs\Common\Android\armeabi-v7a\libyoga.so" Configuration="Release" Class="FGX_YogaLibrary">
+                <DeployFile LocalName="$(FGX)\Libs\Common\Android\Debug\armeabi-v7a\libfb.so" Configuration="Debug" Class="FGX_YogaLibraryFb">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a\</RemoteDir>
+                        <RemoteName>libfb.so</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="$(FGX)\Libs\Common\Android\Debug\armeabi-v7a\libyoga.so" Configuration="Debug" Class="FGX_YogaLibrary">
                     <Platform Name="Android">
                         <RemoteDir>library\lib\armeabi-v7a\</RemoteDir>
                         <RemoteName>libyoga.so</RemoteName>
@@ -416,13 +430,6 @@
                     <Platform Name="Android">
                         <RemoteDir>res\values\</RemoteDir>
                         <RemoteName>styles.xml</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="$(FGX)\Libs\Common\Android\armeabi-v7a\libyoga.so" Configuration="Debug" Class="FGX_YogaLibrary">
-                    <Platform Name="Android">
-                        <RemoteDir>library\lib\armeabi-v7a\</RemoteDir>
-                        <RemoteName>libyoga.so</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

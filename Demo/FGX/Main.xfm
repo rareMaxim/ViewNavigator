@@ -1,9 +1,8 @@
-object Form5: TForm5
+object viewMain: TviewMain
   Toolbar = fgnvgtnbr1
   OnCreate = fgFormCreate
   Size.Width = 616.000000000000000000
   Size.Height = 412.000000000000000000
-  OnDestroy = fgFormDestroy
   SavedSizeWidth = 616s
   SavedSizeHeight = 412s
   object fgnvgtnbr1: TfgNavigationBar

@@ -3,14 +3,15 @@ program ViewNavDemoFGX;
 uses
   FGX.Application,
   FGX.Forms,
-  Main in 'Main.pas' {Form5: TForm5},
-  One in 'One.pas' {View1: TView1},
-  two in 'two.pas' {View2: TView2};
+  Main in 'Main.pas' {Form5: TfgForm},
+  One in 'One.pas' {View1: TfgForm},
+  two in 'two.pas' {View2: TfgForm},
+  Demo.Bootstrap in '..\Demo.Bootstrap.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TForm5, Form5);
+  Application.CreateForm(TviewMain, viewMain);
   Application.Run;
 end.

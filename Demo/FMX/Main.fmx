@@ -8,7 +8,6 @@ object Form4: TForm4
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   OnCreate = FormCreate
-  OnDestroy = FormDestroy
   DesignerMasterStyle = 0
   object lst1: TListBox
     Align = Left

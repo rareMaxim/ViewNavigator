@@ -28,11 +28,11 @@ type
 implementation
 
 uses
-  ViewNavigator;
+  Demo.Bootstrap;
 
 {$R *.fmx}
 initialization
-  TViewsStore.AddView('view2', Tview2);
+  TBootstrap.NavStore.AddView('view2', Tview2);
 
 end.
 

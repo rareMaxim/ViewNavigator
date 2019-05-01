@@ -35,6 +35,7 @@ type
   TViewNavigator = class(TvnHistory, IvnNavigator)
   private
     FParent: TvnControl;
+    FViewStore: TViewsStore;
     function GetParent: TvnControl;
     procedure SetParent(const Value: TvnControl);
   protected
@@ -46,6 +47,8 @@ type
     function Back: string; override;
     function forward: string; override;
     constructor Create; override;
+    destructor Destroy; override;
+    property Store: TViewsStore read FViewStore;
     property Parent: TvnControl read GetParent write SetParent;
   end;
 
@@ -62,7 +65,13 @@ end;
 constructor TViewNavigator.Create;
 begin
   inherited;
-  TViewsStore.ViewsInitialize;
+  FViewStore := TViewsStore.Create;
+end;
+
+destructor TViewNavigator.Destroy;
+begin
+  FViewStore.Free;
+  inherited;
 end;
 
 function TViewNavigator.forward: string;
@@ -80,7 +89,7 @@ procedure TViewNavigator.Hide;
 var
   AView: TvnViewInfo;
 begin
-  if TViewsStore.FindView(Current, AView) then
+  if (not Current.IsEmpty) and FViewStore.FindView(Current, AView) then
     AView.HideView();
 end;
 
@@ -90,7 +99,7 @@ var
   LDataView: IvnDataView;
 begin
   Navigate(APageName);
-  if TViewsStore.FindView(APageName, LView) then
+  if FViewStore.FindView(APageName, LView) then
   begin
     if Supports(LView.Control, IvnDataView, LDataView) then
       LDataView.DataReceive(AData);
@@ -115,7 +124,7 @@ procedure TViewNavigator.Show(const AName: string);
 var
   AView: TvnViewInfo;
 begin
-  if TViewsStore.FindView(AName, AView) then
+  if FViewStore.FindView(AName, AView) then
     AView.ShowView(Parent)
   else
     raise EViewNavigator.CreateFmt('Cant find view by name: %s', [AName]);
