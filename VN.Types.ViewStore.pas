@@ -8,14 +8,18 @@ uses
   System.Generics.Collections;
 
 type
+  TViewsType = TObjectDictionary<string, TvnViewInfo>;
+
   TViewsStore = class
   private
-    FViews: TObjectDictionary<string, TvnViewInfo>;
+    FViews: TViewsType;
   public
     constructor Create;
     destructor Destroy; override;
     procedure AddView(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
     function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
+  public
+    property Views: TViewsType read FViews;
   end;
 
 implementation
@@ -37,7 +41,7 @@ end;
 
 constructor TViewsStore.Create;
 begin
-  FViews := TObjectDictionary<string, TvnViewInfo>.Create([doOwnsValues]);
+  FViews := TViewsType.Create([doOwnsValues]);
 end;
 
 destructor TViewsStore.Destroy;
