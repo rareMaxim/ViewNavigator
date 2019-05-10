@@ -17,6 +17,7 @@ type
     FParent: TvnControl;
     procedure SetParent(const Value: TvnControl);
   private
+    procedure NotifySelfCreate;        // must be private
     procedure NotifySelfShow;
     procedure NotifySelfHide;
     procedure NotifySelfDestroy;
@@ -27,10 +28,11 @@ type
     procedure ViewCreate;
     procedure ViewDestroy;
   public
-    procedure NotifySelfCreate;        // must be private
+    procedure NotifyMainFormIsCreated;
     procedure ShowView(AParent: TvnControl);
     procedure HideView();
-    constructor Create(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+    constructor Create(const AName: string; ANavClass: TvnControlClass;
+      ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
     destructor Destroy; override;
     property Name: string read FName write FName;
     property NavigationClass: TvnControlClass read FNavigationClass write FNavigationClass;
@@ -53,7 +55,8 @@ begin
   Result := IsCreated and (FCreateDestroyTime = ADestroyTime) and (not IsHaveParent);
 end;
 
-constructor TvnViewInfo.Create(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+constructor TvnViewInfo.Create(const AName: string; ANavClass: TvnControlClass;
+  ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
 begin
   FName := AName;
   FNavigationClass := ANavClass;
@@ -97,10 +100,15 @@ begin
   Result := FIsHaveParent;
 end;
 
-procedure TvnViewInfo.NotifySelfCreate;
+procedure TvnViewInfo.NotifyMainFormIsCreated;
 begin
   if CanBeCreate(TvnCreateDestroyTime.OnCreateDestroy) then
     ViewCreate;
+end;
+
+procedure TvnViewInfo.NotifySelfCreate;
+begin
+
 end;
 
 procedure TvnViewInfo.NotifySelfDestroy;
