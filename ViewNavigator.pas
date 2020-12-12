@@ -16,7 +16,7 @@ uses
   System.SysUtils;
 
 type
-  TvnCreateDestroyTime = VN.Types.TvnCreateDestroyTime;
+  TvnLifeCycle = VN.Types.TvnLifeCycle;
 
   IvnDataView = VN.Types.IvnDataView;
 
@@ -48,6 +48,7 @@ type
     function forward: string; override;
     constructor Create; override;
     destructor Destroy; override;
+    procedure NotifyOnMainFormCreated;
     property Store: TViewsStore read FViewStore;
     property Parent: TvnControl read GetParent write SetParent;
   end;
@@ -103,6 +104,16 @@ begin
   begin
     if Supports(LView.Control, IvnDataView, LDataView) then
       LDataView.DataReceive(AData);
+  end;
+end;
+
+procedure TViewNavigator.NotifyOnMainFormCreated;
+var
+  LView: TvnViewInfo;
+begin
+  for LView in FViewStore.Views.Values do
+  begin
+    LView.NotifyMainFormIsCreated;
   end;
 end;
 

@@ -63,7 +63,7 @@ begin
 end;
 
 initialization
-  TBootstrap.NavStore.AddView('view1', Tview1, TvnCreateDestroyTime.OnShowHide);
+  TBootstrap.NavStore.AddView('view1', Tview1, TvnCreateDestroyTime.OnCreateDestroy);
 
 end.
 

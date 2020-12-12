@@ -1,4 +1,4 @@
-unit VN.Types;
+﻿unit VN.Types;
 
 interface
 
@@ -12,7 +12,7 @@ type
 
   TvnControlClass = class of TvnControl;
 
-  TvnCreateDestroyTime = (OnCreateDestroy, OnShowHide);
+  TvnLifeCycle = (OnCreateDestroy, OnShowHide);
 
   TViewStoreParameter = (CreateOnShowAndFreeOnHide, CreateOnCreationAndFreeOnDestroy);
 

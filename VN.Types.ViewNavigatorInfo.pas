@@ -1,4 +1,4 @@
-unit VN.Types.ViewNavigatorInfo;
+﻿unit VN.Types.ViewNavigatorInfo;
 
 interface
 
@@ -9,7 +9,7 @@ type
   TvnViewInfo = class(TInterfacedObject)
   private
     FName: string;
-    FCreateDestroyTime: TvnCreateDestroyTime;
+    fLifeCycle: TvnLifeCycle;
     FNavigationClass: TvnControlClass;
     FControl: TvnControl;
     FIsCreated: Boolean;
@@ -17,24 +17,25 @@ type
     FParent: TvnControl;
     procedure SetParent(const Value: TvnControl);
   private
+    procedure NotifySelfCreate; // must be private
     procedure NotifySelfShow;
     procedure NotifySelfHide;
     procedure NotifySelfDestroy;
-    function CanBeFree(ADestroyTime: TvnCreateDestroyTime): Boolean;
-    function CanBeCreate(ACreationTime: TvnCreateDestroyTime): Boolean;
+    function CanBeFree(ADestroyTime: TvnLifeCycle): Boolean;
+    function CanBeCreate(ACreationTime: TvnLifeCycle): Boolean;
     function IsCreated: Boolean;
     function IsHaveParent: Boolean;
     procedure ViewCreate;
     procedure ViewDestroy;
   public
-    procedure NotifySelfCreate;        // must be private
+    procedure NotifyMainFormIsCreated;
     procedure ShowView(AParent: TvnControl);
     procedure HideView();
-    constructor Create(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+    constructor Create(ANavClass: TvnControlClass);
     destructor Destroy; override;
     property Name: string read FName write FName;
     property NavigationClass: TvnControlClass read FNavigationClass write FNavigationClass;
-    property CreateDestroyTime: TvnCreateDestroyTime read FCreateDestroyTime write FCreateDestroyTime;
+    property LifeCycle: TvnLifeCycle read fLifeCycle write fLifeCycle;
     property Control: TvnControl read FControl write FControl;
     property Parent: TvnControl read FParent write SetParent;
   end;
@@ -43,21 +44,21 @@ implementation
 
 { TvnViewInfo }
 
-function TvnViewInfo.CanBeCreate(ACreationTime: TvnCreateDestroyTime): Boolean;
+function TvnViewInfo.CanBeCreate(ACreationTime: TvnLifeCycle): Boolean;
 begin
-  Result := (FCreateDestroyTime = ACreationTime) and (not IsCreated);
+  Result := (fLifeCycle = ACreationTime) and (not IsCreated);
 end;
 
-function TvnViewInfo.CanBeFree(ADestroyTime: TvnCreateDestroyTime): Boolean;
+function TvnViewInfo.CanBeFree(ADestroyTime: TvnLifeCycle): Boolean;
 begin
-  Result := IsCreated and (FCreateDestroyTime = ADestroyTime) and (not IsHaveParent);
+  Result := IsCreated and (fLifeCycle = ADestroyTime) and (not IsHaveParent);
 end;
 
-constructor TvnViewInfo.Create(const AName: string; ANavClass: TvnControlClass; ACreateDestroyTime: TvnCreateDestroyTime = TvnCreateDestroyTime.OnShowHide);
+constructor TvnViewInfo.Create(ANavClass: TvnControlClass);
 begin
-  FName := AName;
+  FName := ANavClass.ClassName;
   FNavigationClass := ANavClass;
-  FCreateDestroyTime := ACreateDestroyTime;
+  fLifeCycle := TvnLifeCycle.OnCreateDestroy;
   HideView;
   NotifySelfCreate;
 end;
@@ -82,7 +83,7 @@ end;
 
 procedure TvnViewInfo.ViewDestroy;
 begin
-  FControl.DisposeOf; // or Free?
+  FControl.Free; // or Dispose?
   FControl := nil;
   FIsCreated := False;
 end;
@@ -97,27 +98,32 @@ begin
   Result := FIsHaveParent;
 end;
 
+procedure TvnViewInfo.NotifyMainFormIsCreated;
+begin
+  if CanBeCreate(TvnLifeCycle.OnCreateDestroy) then
+    ViewCreate;
+end;
+
 procedure TvnViewInfo.NotifySelfCreate;
 begin
-  if CanBeCreate(TvnCreateDestroyTime.OnCreateDestroy) then
-    ViewCreate;
+
 end;
 
 procedure TvnViewInfo.NotifySelfDestroy;
 begin
-  if CanBeFree(TvnCreateDestroyTime.OnCreateDestroy) then
+  if CanBeFree(TvnLifeCycle.OnCreateDestroy) then
     ViewDestroy;
 end;
 
 procedure TvnViewInfo.NotifySelfHide;
 begin
-  if CanBeFree(TvnCreateDestroyTime.OnShowHide) then
+  if CanBeFree(TvnLifeCycle.OnShowHide) then
     ViewDestroy;
 end;
 
 procedure TvnViewInfo.NotifySelfShow;
 begin
-  if CanBeCreate(TvnCreateDestroyTime.OnShowHide) then
+  if CanBeCreate(TvnLifeCycle.OnShowHide) then
     ViewCreate;
 end;
 
@@ -137,4 +143,3 @@ begin
 end;
 
 end.
-

@@ -1,4 +1,4 @@
-package ViewNavigatorPkg;
+package ViewNavigatorPkgFMX;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -28,18 +28,15 @@ package ViewNavigatorPkg;
 {$IMPLICITBUILD ON}
 
 requires
-{$IFDEF FMX_APP}
-  fmx,
-{$ENDIF}
-  rtl;
+  rtl,
+  fmx;
 
 contains
   ViewNavigator in 'ViewNavigator.pas',
-  VN.Framworks in 'VN.Framworks.pas',
   VN.History in 'VN.History.pas',
   VN.Types in 'VN.Types.pas',
   VN.Types.ViewNavigatorInfo in 'VN.Types.ViewNavigatorInfo.pas',
   VN.Types.ViewStore in 'VN.Types.ViewStore.pas',
-  VN.Types.Attributes in 'VN.Types.Attributes.pas';
+  VN.Attributes in 'VN.Attributes.pas';
 
 end.

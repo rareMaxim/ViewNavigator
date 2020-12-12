@@ -3,6 +3,7 @@ unit two;
 interface
 
 uses
+  VN.Attributes,
   System.SysUtils,
   System.Types,
   System.UITypes,
@@ -17,12 +18,15 @@ uses
   FMX.Objects;
 
 type
+
+  [vnName('view2')]
   Tview2 = class(TFrame)
     txt1: TText;
   private
     { Private declarations }
   public
     { Public declarations }
+
   end;
 
 implementation
@@ -31,8 +35,12 @@ uses
   Demo.Bootstrap;
 
 {$R *.fmx}
+
 initialization
-  TBootstrap.NavStore.AddView('view2', Tview2);
+
+TBootstrap.NavStore.AddView(Tview2);
+
+
+// Tview2.ClassName;
 
 end.
-
