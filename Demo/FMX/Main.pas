@@ -3,7 +3,6 @@ unit Main;
 interface
 
 uses
-  two,
   ViewNavigator,
   System.SysUtils,
   System.Types,
@@ -46,6 +45,7 @@ uses
 procedure TForm4.FormCreate(Sender: TObject);
 begin
   TBootstrap.Navigator.Parent := lyt1;
+  TBootstrap.Navigator.NotifyOnMainFormCreated;
 end;
 
 procedure TForm4.lst1ItemClick(const Sender: TCustomListBox; const Item: TListBoxItem);
@@ -54,4 +54,3 @@ begin
 end;
 
 end.
-

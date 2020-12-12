@@ -16,7 +16,7 @@ uses
   System.SysUtils;
 
 type
-  TvnCreateDestroyTime = VN.Types.TvnCreateDestroyTime;
+  TvnLifeCycle = VN.Types.TvnLifeCycle;
 
   IvnDataView = VN.Types.IvnDataView;
 
