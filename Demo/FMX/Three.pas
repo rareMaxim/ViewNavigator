@@ -36,7 +36,6 @@ uses
   Demo.Bootstrap;
 
 {$R *.fmx}
-
 { Tview3 }
 
 destructor Tview3.Destroy;
@@ -47,6 +46,6 @@ end;
 
 initialization
 
-TBootstrap.NavStore.AddView(Tview3);
+// TBootstrap.NavStore.AddView(Tview3);
 
 end.

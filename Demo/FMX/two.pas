@@ -31,16 +31,6 @@ type
 
 implementation
 
-uses
-  Demo.Bootstrap;
-
 {$R *.fmx}
-
-initialization
-
-TBootstrap.NavStore.AddView(Tview2);
-
-
-// Tview2.ClassName;
 
 end.

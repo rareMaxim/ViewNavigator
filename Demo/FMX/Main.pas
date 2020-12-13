@@ -24,11 +24,13 @@ type
     ListBoxItem1: TListBoxItem;
     ListBoxItem2: TListBoxItem;
     ListBoxItem3: TListBoxItem;
+    procedure FormDestroy(Sender: TObject);
     procedure lst1ItemClick(const Sender: TCustomListBox; const Item: TListBoxItem);
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
-
+    FNavigator: TViewNavigator;
+    procedure RegisterViews(AViews: TArray<TvnControlClass>);
   public
     { Public declarations }
   end;
@@ -39,18 +41,32 @@ var
 implementation
 
 uses
-  Demo.Bootstrap;
+  One, Two, Three;
 {$R *.fmx}
+
+procedure TForm4.FormDestroy(Sender: TObject);
+begin
+  FNavigator.Free;
+end;
 
 procedure TForm4.FormCreate(Sender: TObject);
 begin
-  TBootstrap.Navigator.Parent := lyt1;
-  TBootstrap.Navigator.NotifyOnMainFormCreated;
+  FNavigator := TViewNavigator.Create;
+  RegisterViews([Tview1, Tview2, Tview3]);
+  FNavigator.Parent := lyt1;
 end;
 
 procedure TForm4.lst1ItemClick(const Sender: TCustomListBox; const Item: TListBoxItem);
 begin
-  TBootstrap.Navigator.Navigate(Item.Text, Format('data: %s', [Item.Text]));
+  FNavigator.Navigate(Item.Text, Format('data: %s', [Item.Text]));
+end;
+
+procedure TForm4.RegisterViews(AViews: TArray<TvnControlClass>);
+var
+  I: Integer;
+begin
+  for I := Low(AViews) to High(AViews) do
+    FNavigator.Store.AddView(AViews[I]);
 end;
 
 end.

@@ -13,6 +13,8 @@ type
   TViewsStore = class
   private
     FViews: TViewsType;
+    fIsMainFormCreated: Boolean;
+    procedure SetIsMainFormCreated(const Value: Boolean);
   protected
     procedure FillFromRtti(ANavClass: TvnControlClass; var AViewInfo: TvnViewInfo);
   public
@@ -23,6 +25,7 @@ type
     function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
   public
     property Views: TViewsType read FViews;
+    property IsMainFormCreated: Boolean read fIsMainFormCreated write SetIsMainFormCreated;
   end;
 
 implementation
@@ -46,11 +49,14 @@ begin
   if ALifeCycle <> TvnLifeCycle.OnCreateDestroy then
     AInfo.LifeCycle := ALifeCycle;
   FViews.Add(AInfo.Name, AInfo);
+  if fIsMainFormCreated then
+    AInfo.NotifyMainFormIsCreated;
 end;
 
 constructor TViewsStore.Create;
 begin
   FViews := TObjectDictionary<string, TvnViewInfo>.Create([doOwnsValues]);
+  fIsMainFormCreated := False;
 end;
 
 destructor TViewsStore.Destroy;
@@ -89,6 +95,18 @@ begin
   Result := FViews.ContainsKey(LLoweredName);
   if Result then
     Return := FViews[LLoweredName];
+end;
+
+procedure TViewsStore.SetIsMainFormCreated(const Value: Boolean);
+var
+  LView: TvnViewInfo;
+begin
+  fIsMainFormCreated := Value;
+  if Value then
+    for LView in Views.Values do
+    begin
+      LView.NotifyMainFormIsCreated;
+    end;
 end;
 
 end.

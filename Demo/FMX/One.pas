@@ -36,7 +36,6 @@ type
 implementation
 
 uses
-  Demo.Bootstrap,
   FMX.DialogService;
 
 {$R *.fmx}
@@ -46,12 +45,5 @@ procedure Tview1.DataReceive(AData: TValue);
 begin
   TDialogService.ShowMessage(AData.AsString);
 end;
-
-initialization
-
-TBootstrap.NavStore.AddView(Tview1, '', TvnLifeCycle.OnCreateDestroy);
-
-// initialization
-// TViewsStore.AddView('view1', Tview1);
 
 end.
