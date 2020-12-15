@@ -19,21 +19,12 @@ type
   TvnLifeCycle = VN.Types.TvnLifeCycle;
 
   IvnDataView = VN.Types.IvnDataView;
-
+  IvnSetViewNavigator = VN.Types.IvnSetViewNavigator;
+  IvnNavigator = VN.Types.IvnNavigator;
   TViewsStore = VN.Types.ViewStore.TViewsStore;
   TvnControlClass = VN.Types.TvnControlClass;
   TvnViewInfoState = VN.Types.TvnViewInfoState;
   TvnViewInfoStates = VN.Types.TvnViewInfoStates;
-
-  IvnNavigator = interface(IvnHistory)
-    ['{699E29FA-9FC0-4392-923D-A2326CE78C55}']
-    function GetParent: TvnControl;
-    procedure SetParent(const Value: TvnControl);
-    // public
-    procedure Navigate(const APageName: string); overload;
-    procedure Navigate(const APageName: string; const AData: TValue); overload;
-    property Parent: TvnControl read GetParent write SetParent;
-  end;
 
   TViewNavigator = class(TvnHistory, IvnNavigator)
   private
@@ -110,12 +101,20 @@ begin
 end;
 
 procedure TViewNavigator.Navigate(const APageName: string);
+var
+  LView: TvnViewInfo;
+  lSetViewNav: IvnSetViewNavigator;
 begin
   if APageName = Current then
     Exit;
   Hide();
   inherited Navigate(APageName);
   Show(APageName);
+  if FViewStore.FindView(APageName, LView) then
+  begin
+    if Supports(LView.Control, IvnSetViewNavigator, lSetViewNav) then
+      lSetViewNav.SetViewNavigator(Self);
+  end;
 end;
 
 procedure TViewNavigator.SetParent(const Value: TvnControl);

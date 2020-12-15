@@ -3,25 +3,11 @@
 interface
 
 uses
+  VN.Types,
   System.Generics.Collections,
   System.SysUtils;
 
 type
-  IvnHistory = interface
-    ['{26FC3B45-81D5-4AE8-9871-84E75295EE87}']
-    // public
-{$REGION 'Info'}
-    function Count: Integer;
-    function CanForward: Boolean;
-    function CanBack: Boolean;
-    function Current: string;
-{$ENDREGION}
-{$REGION 'Navigation'}
-    procedure Navigate(const APageName: string);
-    function Next: string;
-    function Back: string;
-{$ENDREGION}
-  end;
 
   TvnHistory = class(TInterfacedObject, IvnHistory)
   private

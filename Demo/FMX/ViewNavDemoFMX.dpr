@@ -1,11 +1,6 @@
 program ViewNavDemoFMX;
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   System.StartUpCopy,
   FMX.Forms,
   Main in 'Main.pas' {Form4} ,
