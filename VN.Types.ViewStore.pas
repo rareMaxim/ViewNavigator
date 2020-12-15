@@ -5,14 +5,17 @@ interface
 uses
   VN.Types,
   VN.Types.ViewNavigatorInfo,
-  System.Generics.Collections;
+  System.Generics.Collections, System.SysUtils;
 
 type
-  TViewsType = TObjectDictionary<string, TvnViewInfo>;
+  TViewsType = TObjectList<TvnViewInfo>;
 
   TViewsStore = class
   private
     FViews: TViewsType;
+    fIsMainFormCreated: Boolean;
+    FOnChangeState: TProc<string, TvnViewInfoStates>;
+    procedure SetIsMainFormCreated(const Value: Boolean);
   protected
     procedure FillFromRtti(ANavClass: TvnControlClass; var AViewInfo: TvnViewInfo);
   public
@@ -23,14 +26,15 @@ type
     function FindView(const AName: string; out Return: TvnViewInfo): Boolean;
   public
     property Views: TViewsType read FViews;
+    property IsMainFormCreated: Boolean read fIsMainFormCreated write SetIsMainFormCreated;
+    property OnChangeState: TProc<string, TvnViewInfoStates> read FOnChangeState write FOnChangeState;
   end;
 
 implementation
 
 uses
   VN.Attributes,
-  System.Rtti,
-  System.SysUtils;
+  System.Rtti;
 
 { TViewsStore }
 
@@ -45,16 +49,25 @@ begin
     AInfo.Name := AName;
   if ALifeCycle <> TvnLifeCycle.OnCreateDestroy then
     AInfo.LifeCycle := ALifeCycle;
-  FViews.Add(AInfo.Name, AInfo);
+  if fIsMainFormCreated then
+    AInfo.NotifyMainFormIsCreated;
+  AInfo.OnChangeState := procedure(AState: TvnViewInfoStates)
+    begin
+      if Assigned(OnChangeState) then
+        OnChangeState(AInfo.Name, AState);
+    end;
+  FViews.Add(AInfo);
 end;
 
 constructor TViewsStore.Create;
 begin
-  FViews := TObjectDictionary<string, TvnViewInfo>.Create([doOwnsValues]);
+  FViews := TObjectList<TvnViewInfo>.Create;
+  fIsMainFormCreated := False;
 end;
 
 destructor TViewsStore.Destroy;
 begin
+  FViews.Clear;
   FreeAndNil(FViews);
 end;
 
@@ -83,12 +96,28 @@ end;
 
 function TViewsStore.FindView(const AName: string; out Return: TvnViewInfo): Boolean;
 var
-  LLoweredName: string;
+  I: Integer;
 begin
-  LLoweredName := AName;
-  Result := FViews.ContainsKey(LLoweredName);
-  if Result then
-    Return := FViews[LLoweredName];
+  Result := False;
+  for I := 0 to FViews.count - 1 do
+    if FViews[I].Name = AName then
+    begin
+      Return := FViews[I];
+      Result := true;
+      break;
+    end;
+end;
+
+procedure TViewsStore.SetIsMainFormCreated(const Value: Boolean);
+var
+  LView: TvnViewInfo;
+begin
+  fIsMainFormCreated := Value;
+  if Value then
+    for LView in Views do
+    begin
+      LView.NotifyMainFormIsCreated;
+    end;
 end;
 
 end.

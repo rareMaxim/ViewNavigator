@@ -21,6 +21,9 @@ type
   IvnDataView = VN.Types.IvnDataView;
 
   TViewsStore = VN.Types.ViewStore.TViewsStore;
+  TvnControlClass = VN.Types.TvnControlClass;
+  TvnViewInfoState = VN.Types.TvnViewInfoState;
+  TvnViewInfoStates = VN.Types.TvnViewInfoStates;
 
   IvnNavigator = interface(IvnHistory)
     ['{699E29FA-9FC0-4392-923D-A2326CE78C55}']
@@ -45,10 +48,9 @@ type
     procedure Navigate(const APageName: string); overload; override;
     procedure Navigate(const APageName: string; const AData: TValue); reintroduce; overload;
     function Back: string; override;
-    function forward: string; override;
+    function Next: string; override;
     constructor Create; override;
     destructor Destroy; override;
-    procedure NotifyOnMainFormCreated;
     property Store: TViewsStore read FViewStore;
     property Parent: TvnControl read GetParent write SetParent;
   end;
@@ -75,9 +77,9 @@ begin
   inherited;
 end;
 
-function TViewNavigator.forward: string;
+function TViewNavigator.Next: string;
 begin
-  Result := inherited forward;
+  Result := inherited Next;
   Show(Result);
 end;
 
@@ -107,16 +109,6 @@ begin
   end;
 end;
 
-procedure TViewNavigator.NotifyOnMainFormCreated;
-var
-  LView: TvnViewInfo;
-begin
-  for LView in FViewStore.Views.Values do
-  begin
-    LView.NotifyMainFormIsCreated;
-  end;
-end;
-
 procedure TViewNavigator.Navigate(const APageName: string);
 begin
   if APageName = Current then
@@ -129,6 +121,10 @@ end;
 procedure TViewNavigator.SetParent(const Value: TvnControl);
 begin
   FParent := Value;
+  if Assigned(Value) and (not FViewStore.IsMainFormCreated) then
+  begin
+    FViewStore.IsMainFormCreated := True;
+  end;
 end;
 
 procedure TViewNavigator.Show(const AName: string);
@@ -142,4 +138,3 @@ begin
 end;
 
 end.
-

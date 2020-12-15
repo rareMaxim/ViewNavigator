@@ -20,6 +20,7 @@ uses
 type
 
   [vnName('view2')]
+  [vnLifeCycle(TvnLifeCycle.OnCreateDestroy)]
   Tview2 = class(TFrame)
     txt1: TText;
   private
@@ -31,16 +32,6 @@ type
 
 implementation
 
-uses
-  Demo.Bootstrap;
-
 {$R *.fmx}
-
-initialization
-
-TBootstrap.NavStore.AddView(Tview2);
-
-
-// Tview2.ClassName;
 
 end.

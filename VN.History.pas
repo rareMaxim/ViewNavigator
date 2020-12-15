@@ -3,7 +3,8 @@
 interface
 
 uses
-  System.Generics.Collections;
+  System.Generics.Collections,
+  System.SysUtils;
 
 type
   IvnHistory = interface
@@ -17,7 +18,7 @@ type
 {$ENDREGION}
 {$REGION 'Navigation'}
     procedure Navigate(const APageName: string);
-    function forward: string;
+    function Next: string;
     function Back: string;
 {$ENDREGION}
   end;
@@ -26,10 +27,12 @@ type
   private
     FHistory: TList<string>;
     FCursor: Integer;
+    fOnNavigate: TProc<string>;
     function GetCursor: Integer;
     procedure SetCursor(const Value: Integer);
   protected
     procedure DoClearBeforeNavigate;
+    procedure DoOnNavigate(const AName: string);
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -63,7 +66,7 @@ type
     /// <summary>
     /// Перейти на шаг вперед
     /// </summary>
-    function forward: string; virtual;
+    function Next: string; virtual;
     /// <summary>
     /// Вернуться на шаг назад
     /// </summary>
@@ -73,6 +76,7 @@ type
     ///
     /// </summary>
     property Cursor: Integer read GetCursor write SetCursor;
+    property OnNavigate: TProc<string> read fOnNavigate write fOnNavigate;
   end;
 
 implementation
@@ -84,6 +88,7 @@ begin
   if CanBack then
     Dec(FCursor);
   Result := Current;
+  DoOnNavigate(Result);
 end;
 
 function TvnHistory.CanBack: Boolean;
@@ -131,12 +136,19 @@ begin
     FHistory.Delete(I);
 end;
 
-function TvnHistory.forward: string;
+procedure TvnHistory.DoOnNavigate(const AName: string);
+begin
+  if Assigned(OnNavigate) then
+    OnNavigate(AName);
+end;
+
+function TvnHistory.Next: string;
 begin
   if CanForward then
   begin
     Inc(FCursor);
     Result := Current;
+    DoOnNavigate(Result);
   end
   else
     Result := '';
@@ -157,6 +169,7 @@ begin
   Inc(FCursor);
   DoClearBeforeNavigate;
   FHistory.Add(APageName);
+  DoOnNavigate(APageName);
 end;
 
 procedure TvnHistory.SetCursor(const Value: Integer);

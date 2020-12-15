@@ -27,26 +27,10 @@ type
     { Private declarations }
   public
     { Public declarations }
-    destructor Destroy; override;
   end;
 
 implementation
 
-uses
-  Demo.Bootstrap;
-
 {$R *.fmx}
-
-{ Tview3 }
-
-destructor Tview3.Destroy;
-begin
-
-  inherited;
-end;
-
-initialization
-
-TBootstrap.NavStore.AddView(Tview3);
 
 end.
