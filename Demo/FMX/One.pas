@@ -27,7 +27,6 @@ type
     txt1: TText;
   private
     { Private declarations }
-
   public
     procedure DataReceive(AData: TValue);
     { Public declarations }

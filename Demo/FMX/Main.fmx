@@ -3,7 +3,7 @@ object Form4: TForm4
   Top = 0
   Caption = 'Form4'
   ClientHeight = 480
-  ClientWidth = 640
+  ClientWidth = 742
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
@@ -47,12 +47,80 @@ object Form4: TForm4
       TabOrder = 2
       Text = 'view3'
     end
+    object Layout1: TLayout
+      Align = Bottom
+      Position.Y = 454.000000000000000000
+      Size.Width = 221.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object SpeedButton1: TSpeedButton
+        StaysPressed = True
+        Align = Left
+        GroupName = 'ViewNavigator'
+        Text = 'Create'
+        OnClick = SpeedButton1Click
+      end
+      object SpeedButton2: TSpeedButton
+        StaysPressed = True
+        Align = Right
+        GroupName = 'ViewNavigator'
+        Margins.Left = 5.000000000000000000
+        Position.X = 141.000000000000000000
+        Text = 'Destroy'
+        OnClick = SpeedButton2Click
+      end
+    end
   end
   object lyt1: TLayout
     Align = Client
-    Size.Width = 415.000000000000000000
+    Size.Width = 514.000000000000000000
     Size.Height = 480.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 1
+    object Grid1: TGrid
+      Align = Bottom
+      CanFocus = True
+      ClipChildren = True
+      Position.Y = 296.000000000000000000
+      Size.Width = 514.000000000000000000
+      Size.Height = 184.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      RowCount = 0
+      OnGetValue = Grid1GetValue
+      Viewport.Width = 510.000000000000000000
+      Viewport.Height = 159.000000000000000000
+      object StringColumn1: TStringColumn
+        Header = #1048#1084#1103
+        Size.Width = 297.000000000000000000
+      end
+      object CheckColumn1: TCheckColumn
+        Header = 'Created'
+        Size.Width = 60.000000000000000000
+      end
+      object CheckColumn2: TCheckColumn
+        Header = 'Visible'
+        Size.Width = 60.000000000000000000
+      end
+    end
+    object Splitter1: TSplitter
+      Align = Bottom
+      Cursor = crVSplit
+      MinSize = 20.000000000000000000
+      Position.Y = 293.000000000000000000
+      Size.Width = 514.000000000000000000
+      Size.Height = 3.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object Splitter2: TSplitter
+    Align = Left
+    Cursor = crHSplit
+    MinSize = 20.000000000000000000
+    Position.X = 225.000000000000000000
+    Size.Width = 3.000000000000000000
+    Size.Height = 480.000000000000000000
+    Size.PlatformDefault = False
   end
 end

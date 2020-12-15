@@ -20,6 +20,7 @@ uses
 type
 
   [vnName('view2')]
+  [vnLifeCycle(TvnLifeCycle.OnCreateDestroy)]
   Tview2 = class(TFrame)
     txt1: TText;
   private
