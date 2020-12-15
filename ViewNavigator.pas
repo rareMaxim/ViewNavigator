@@ -22,6 +22,8 @@ type
 
   TViewsStore = VN.Types.ViewStore.TViewsStore;
   TvnControlClass = VN.Types.TvnControlClass;
+  TvnViewInfoState = VN.Types.TvnViewInfoState;
+  TvnViewInfoStates = VN.Types.TvnViewInfoStates;
 
   IvnNavigator = interface(IvnHistory)
     ['{699E29FA-9FC0-4392-923D-A2326CE78C55}']
@@ -46,7 +48,7 @@ type
     procedure Navigate(const APageName: string); overload; override;
     procedure Navigate(const APageName: string; const AData: TValue); reintroduce; overload;
     function Back: string; override;
-    function forward: string; override;
+    function Next: string; override;
     constructor Create; override;
     destructor Destroy; override;
     property Store: TViewsStore read FViewStore;
@@ -75,9 +77,9 @@ begin
   inherited;
 end;
 
-function TViewNavigator.forward: string;
+function TViewNavigator.Next: string;
 begin
-  Result := inherited forward;
+  Result := inherited Next;
   Show(Result);
 end;
 

@@ -3,20 +3,21 @@
 interface
 
 uses
-  VN.Types;
+  VN.Types,
+  System.SysUtils;
 
 type
   TvnViewInfo = class(TInterfacedObject)
   private
-    FName: string;
+    fName: string;
     fLifeCycle: TvnLifeCycle;
-    FNavigationClass: TvnControlClass;
-    FControl: TvnControl;
-    FIsCreated: Boolean;
-    FIsHaveParent: Boolean;
-    FParent: TvnControl;
+    fNavigationClass: TvnControlClass;
+    fControl: TvnControl;
+    fIsCreated: Boolean;
+    FStates: TvnViewInfoStates;
+    FOnChangeState: TProc<TvnViewInfoStates>;
     procedure SetParent(const Value: TvnControl);
-  private
+    procedure DoChangeStates(AStates: TvnViewInfoStates);
     procedure NotifySelfCreate; // must be private
     procedure NotifySelfShow;
     procedure NotifySelfHide;
@@ -27,17 +28,19 @@ type
     function IsHaveParent: Boolean;
     procedure ViewCreate;
     procedure ViewDestroy;
+    procedure SetStates(const Value: TvnViewInfoStates);
   public
     procedure NotifyMainFormIsCreated;
     procedure ShowView(AParent: TvnControl);
     procedure HideView();
     constructor Create(ANavClass: TvnControlClass);
     destructor Destroy; override;
-    property Name: string read FName write FName;
-    property NavigationClass: TvnControlClass read FNavigationClass write FNavigationClass;
+    property States: TvnViewInfoStates read FStates write SetStates;
+    property Name: string read fName write fName;
+    property NavigationClass: TvnControlClass read fNavigationClass write fNavigationClass;
     property LifeCycle: TvnLifeCycle read fLifeCycle write fLifeCycle;
-    property Control: TvnControl read FControl write FControl;
-    property Parent: TvnControl read FParent write SetParent;
+    property Control: TvnControl read fControl write fControl;
+    property OnChangeState: TProc<TvnViewInfoStates> read FOnChangeState write FOnChangeState;
   end;
 
 implementation
@@ -56,11 +59,9 @@ end;
 
 constructor TvnViewInfo.Create(ANavClass: TvnControlClass);
 begin
-  FName := ANavClass.ClassName;
-  FNavigationClass := ANavClass;
+  fName := ANavClass.ClassName;
+  fNavigationClass := ANavClass;
   fLifeCycle := TvnLifeCycle.OnCreateDestroy;
-  HideView;
-  NotifySelfCreate;
 end;
 
 destructor TvnViewInfo.Destroy;
@@ -69,44 +70,54 @@ begin
   inherited;
 end;
 
+procedure TvnViewInfo.DoChangeStates(AStates: TvnViewInfoStates);
+begin
+  FStates := AStates;
+  if Assigned(OnChangeState) then
+    OnChangeState(AStates);
+end;
+
 procedure TvnViewInfo.HideView;
 begin
-  Parent := nil;
+  fControl.Parent := nil;
+  DoChangeStates(FStates - [TvnViewInfoState.IsVisible]);
   NotifySelfHide;
 end;
 
 procedure TvnViewInfo.ViewCreate;
 begin
-  FControl := TvnControl(FNavigationClass.Create(nil));
-  FIsCreated := True;
+  fControl := TvnControl(fNavigationClass.Create(nil));
+  fIsCreated := True;
+  DoChangeStates(FStates + [TvnViewInfoState.IsCreated]);
 end;
 
 procedure TvnViewInfo.ViewDestroy;
 begin
-  FControl.Free; // or Dispose?
-  FControl := nil;
-  FIsCreated := False;
+  fControl.Parent := nil;
+  fControl.Free; // or Dispose?
+  fIsCreated := False;
+  DoChangeStates(FStates - [TvnViewInfoState.IsCreated]);
 end;
 
 function TvnViewInfo.IsCreated: Boolean;
 begin
-  Result := FIsCreated and Assigned(FControl);
+  Result := fIsCreated and Assigned(fControl);
 end;
 
 function TvnViewInfo.IsHaveParent: Boolean;
 begin
-  Result := FIsHaveParent;
+  Result := IsCreated and Assigned(fControl.Parent);
 end;
 
 procedure TvnViewInfo.NotifyMainFormIsCreated;
 begin
-  if CanBeCreate(TvnLifeCycle.OnCreateDestroy) then
-    ViewCreate;
+  NotifySelfCreate;
 end;
 
 procedure TvnViewInfo.NotifySelfCreate;
 begin
-
+  if CanBeCreate(TvnLifeCycle.OnCreateDestroy) then
+    ViewCreate;
 end;
 
 procedure TvnViewInfo.NotifySelfDestroy;
@@ -129,17 +140,23 @@ end;
 
 procedure TvnViewInfo.SetParent(const Value: TvnControl);
 begin
-  FParent := Value;
   if IsCreated then
-    FControl.Parent := Value;
-  FIsHaveParent := Assigned(Value);
+    fControl.Parent := Value;
+end;
+
+procedure TvnViewInfo.SetStates(const Value: TvnViewInfoStates);
+begin
+  FStates := Value;
+  if Assigned(OnChangeState) then
+    OnChangeState(Value);
 end;
 
 procedure TvnViewInfo.ShowView(AParent: TvnControl);
 begin
   NotifySelfShow;
-  Parent := AParent;
-  FControl.Visible := True;
+  SetParent(AParent);
+  fControl.Visible := True;
+  DoChangeStates(FStates + [TvnViewInfoState.IsVisible]);
 end;
 
 end.

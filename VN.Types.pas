@@ -8,12 +8,14 @@ uses
   VN.Framworks;
 
 type
+{$SCOPEDENUMS ON}
   TvnControl = VN.Framworks.TvnControl;
 
   TvnControlClass = class of TvnControl;
 
   TvnLifeCycle = (OnCreateDestroy, OnShowHide);
-
+  TvnViewInfoState = (IsCreated, IsVisible);
+  TvnViewInfoStates = set of TvnViewInfoState;
   TViewStoreParameter = (CreateOnShowAndFreeOnHide, CreateOnCreationAndFreeOnDestroy);
 
   EViewNavigator = class(Exception);
@@ -26,4 +28,3 @@ type
 implementation
 
 end.
-
