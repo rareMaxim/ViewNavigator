@@ -1,0 +1,9 @@
+{
+	"name": "ViewNavigator",
+	"description": "Helper for working with TFrame",
+	"version": "1.0.2",
+	"homepage": "https://github.com/ms301/ViewNavigator",
+	"mainsrc": "./",
+	"projects": [],
+	"dependencies": {}
+}
