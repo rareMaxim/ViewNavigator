@@ -20,6 +20,12 @@ type
 
   EViewNavigator = class(Exception);
 
+  TExceptionsBuilder = class
+  public
+    class procedure E_ViewNotFound(const AViewName: string);
+    class procedure E_FrameWithotIvnDataView(const AViewName: string);
+  end;
+
   IvnHistory = interface
     ['{26FC3B45-81D5-4AE8-9871-84E75295EE87}']
     // public
@@ -57,5 +63,15 @@ type
   end;
 
 implementation
+
+class procedure TExceptionsBuilder.E_FrameWithotIvnDataView(const AViewName: string);
+begin
+  raise EViewNavigator.CreateFmt('TFrame unsupported IvnDataView: %s', [AViewName]);
+end;
+
+class procedure TExceptionsBuilder.E_ViewNotFound(const AViewName: string);
+begin
+  raise EViewNavigator.CreateFmt('Cant find view by name: %s', [AViewName]);
+end;
 
 end.

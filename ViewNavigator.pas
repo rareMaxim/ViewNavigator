@@ -38,6 +38,7 @@ type
   public
     procedure Navigate(const APageName: string); overload; override;
     procedure Navigate(const APageName: string; const AData: TValue); reintroduce; overload;
+    procedure SendData(const APageName: string; const AData: TValue);
     function Back: string; override;
     function Next: string; override;
     constructor Create; override;
@@ -88,16 +89,9 @@ begin
 end;
 
 procedure TViewNavigator.Navigate(const APageName: string; const AData: TValue);
-var
-  LView: TvnViewInfo;
-  LDataView: IvnDataView;
 begin
   Navigate(APageName);
-  if FViewStore.FindView(APageName, LView) then
-  begin
-    if Supports(LView.Control, IvnDataView, LDataView) then
-      LDataView.DataReceive(AData);
-  end;
+  SendData(APageName, AData);
 end;
 
 procedure TViewNavigator.Navigate(const APageName: string);
@@ -117,6 +111,22 @@ begin
   end;
 end;
 
+procedure TViewNavigator.SendData(const APageName: string; const AData: TValue);
+var
+  LView: TvnViewInfo;
+  LDataView: IvnDataView;
+begin
+  if FViewStore.FindView(APageName, LView) then
+  begin
+    if Supports(LView.Control, IvnDataView, LDataView) then
+      LDataView.DataReceive(AData)
+    else
+      TExceptionsBuilder.E_FrameWithotIvnDataView(APageName);
+  end
+  else
+    TExceptionsBuilder.E_ViewNotFound(APageName);
+end;
+
 procedure TViewNavigator.SetParent(const Value: TvnControl);
 begin
   FParent := Value;
@@ -133,7 +143,7 @@ begin
   if FViewStore.FindView(AName, AView) then
     AView.ShowView(Parent)
   else
-    raise EViewNavigator.CreateFmt('Cant find view by name: %s', [AName]);
+    TExceptionsBuilder.E_ViewNotFound(AName);
 end;
 
 end.
