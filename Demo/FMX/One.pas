@@ -21,7 +21,7 @@ uses
 
 type
 
-  [vnName('SendDataToView')]
+  [vnName('Налаштування')]
   [vnLifeCycle(TvnLifeCycle.OnCreateDestroy)]
   Tview1 = class(TFrame, IvnDataView)
     txt1: TText;

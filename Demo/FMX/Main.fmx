@@ -29,7 +29,7 @@ object Form4: TForm4
       Size.Height = 30.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
-      Text = 'SendDataToView'
+      Text = #1053#1072#1083#1072#1096#1090#1091#1074#1072#1085#1085#1103
     end
     object ListBoxItem2: TListBoxItem
       Position.Y = 30.000000000000000000
