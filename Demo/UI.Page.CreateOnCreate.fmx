@@ -1,13 +1,14 @@
-object view2: Tview2
+object CreateOnCreate: TCreateOnCreate
+  Align = Client
+  Enabled = False
   Size.Width = 320.000000000000000000
   Size.Height = 240.000000000000000000
   Size.PlatformDefault = False
-  object txt1: TText
+  object Rectangle1: TRectangle
     Align = Client
+    Fill.Color = claChocolate
     Size.Width = 320.000000000000000000
     Size.Height = 240.000000000000000000
     Size.PlatformDefault = False
-    Text = 'View # 2'
-    TextSettings.Font.Size = 30.000000000000000000
   end
 end

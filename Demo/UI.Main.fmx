@@ -1,0 +1,118 @@
+object Form6: TForm6
+  Left = 0
+  Top = 0
+  Caption = 'Form6'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  DesignerMasterStyle = 0
+  object ListBox1: TListBox
+    Align = Left
+    Position.Y = 40.000000000000000000
+    Size.Width = 201.000000000000000000
+    Size.Height = 256.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    DisableFocusEffect = True
+    DefaultItemStyles.ItemStyle = ''
+    DefaultItemStyles.GroupHeaderStyle = ''
+    DefaultItemStyles.GroupFooterStyle = ''
+    Viewport.Width = 197.000000000000000000
+    Viewport.Height = 252.000000000000000000
+    object CreateOnCreate: TListBoxItem
+      TabOrder = 0
+      Text = 'CreateOnCreate'
+      OnClick = CreateOnCreateClick
+    end
+    object CreateOmShow: TListBoxItem
+      Position.Y = 19.000000000000000000
+      TabOrder = 1
+      Text = 'CreateOmShow'
+      OnClick = CreateOmShowClick
+    end
+    object SendData: TListBoxItem
+      Position.Y = 38.000000000000000000
+      TabOrder = 2
+      Text = 'SendData'
+      OnClick = SendDataClick
+    end
+  end
+  object Layout1: TLayout
+    Align = Client
+    Size.Width = 439.000000000000000000
+    Size.Height = 256.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 2
+  end
+  object Layout2: TLayout
+    Align = Bottom
+    Position.Y = 296.000000000000000000
+    Size.Width = 640.000000000000000000
+    Size.Height = 184.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    object Grid1: TGrid
+      Align = Left
+      CanFocus = True
+      ClipChildren = True
+      Size.Width = 393.000000000000000000
+      Size.Height = 184.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      OnGetValue = Grid1GetValue
+      Viewport.Width = 373.000000000000000000
+      Viewport.Height = 159.000000000000000000
+      object clmnName: TColumn
+        Header = 'Name'
+      end
+      object clmnIsCreated: TCheckColumn
+        Header = 'IsCreated'
+        Size.Width = 116.000000000000000000
+      end
+      object clmnIsVisible: TCheckColumn
+        Header = 'IsVisible'
+        Size.Width = 103.000000000000000000
+      end
+    end
+    object ListBox2: TListBox
+      Align = Client
+      Enabled = False
+      Size.Width = 247.000000000000000000
+      Size.Height = 184.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+      DisableFocusEffect = True
+      DefaultItemStyles.ItemStyle = ''
+      DefaultItemStyles.GroupHeaderStyle = ''
+      DefaultItemStyles.GroupFooterStyle = ''
+      Viewport.Width = 243.000000000000000000
+      Viewport.Height = 180.000000000000000000
+    end
+  end
+  object ToolBar1: TToolBar
+    Size.Width = 640.000000000000000000
+    Size.Height = 40.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    object Button1: TButton
+      Enabled = False
+      Position.X = 8.000000000000000000
+      Position.Y = 8.000000000000000000
+      TabOrder = 0
+      Text = 'Back'
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Enabled = False
+      Position.X = 104.000000000000000000
+      Position.Y = 8.000000000000000000
+      TabOrder = 1
+      Text = 'Next'
+      OnClick = Button2Click
+    end
+  end
+end

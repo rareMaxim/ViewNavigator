@@ -1,0 +1,13 @@
+object CreateOnShow: TCreateOnShow
+  Align = Client
+  Size.Width = 511.000000000000000000
+  Size.Height = 381.000000000000000000
+  Size.PlatformDefault = False
+  object Rectangle1: TRectangle
+    Align = Client
+    Fill.Color = claChartreuse
+    Size.Width = 511.000000000000000000
+    Size.Height = 381.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

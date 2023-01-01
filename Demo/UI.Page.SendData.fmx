@@ -1,0 +1,25 @@
+object SendData: TSendData
+  Align = Client
+  Size.Width = 581.000000000000000000
+  Size.Height = 433.000000000000000000
+  Size.PlatformDefault = False
+  object Rectangle1: TRectangle
+    Align = Client
+    Fill.Color = claDarkseagreen
+    Size.Width = 581.000000000000000000
+    Size.Height = 433.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object Label1: TLabel
+    Align = VertCenter
+    AutoSize = True
+    StyledSettings = [Family, Style, FontColor]
+    Position.Y = 183.000000000000000000
+    Size.Width = 581.000000000000000000
+    Size.Height = 67.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 50.000000000000000000
+    Text = 'Label1'
+    TabOrder = 1
+  end
+end
