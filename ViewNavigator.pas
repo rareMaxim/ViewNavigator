@@ -47,7 +47,7 @@ type
     /// </summary>
     FControlClass: TControlClass;
     FStates: TvnViewInfoStates;
-    FOnChangeState: TProc<TvnViewInfoStates>;
+    FOnChangeStateCallback: TProc<TvnViewInfoStates>;
     procedure DoCreate;
     procedure DoDestroy;
   protected
@@ -95,7 +95,7 @@ type
     /// <summary>
     /// Подія, яка сповіщає про змін стану сторінки
     /// </summary>
-    property OnChangeState: TProc<TvnViewInfoStates> read FOnChangeState write FOnChangeState;
+    property OnChangeStateCallback: TProc<TvnViewInfoStates> read FOnChangeStateCallback write FOnChangeStateCallback;
   end;
 
   TvnHistory = class
@@ -160,31 +160,50 @@ type
     FHistory: TvnHistory;
     FParent: TControl;
     FPages: TObjectList<TvnViewInfo>;
-    FOnChangeState: TProc<string, TvnViewInfoStates>;
+    FOnChangeStateCallback: TProc<string, TvnViewInfoStates>;
     FVersion: string;
+    FOnNavigationFailedCallback: TProc<string>;
   protected
+    procedure DoNavigationFailed(const APage: string);
     procedure DoHideCurrentView;
     function TryFindPageInfo(AControlClass: TControlClass; var APageInfo: TvnViewInfo): Boolean; overload;
     function TryFindPageInfo(AViewName: string; var APageInfo: TvnViewInfo): Boolean; overload;
-    procedure DoNavigate(APageInfo: TvnViewInfo);
+    function DoNavigate(APageInfo: TvnViewInfo): Boolean;
+    function DoSendData(APageInfo: TvnViewInfo; const AData: TValue): Boolean;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure RegisterFrame(AControlClass: TControlClass); overload;
     procedure RegisterFrame(AControlClasses: TArray<TControlClass>); overload;
-    procedure Navigate(AControlClass: TControlClass); overload;
-    procedure Navigate(AControlClass: TControlClass; AData: TValue); overload;
-    procedure Navigate(ASourcePage: string); overload;
+    function Navigate(AControlClass: TControlClass): Boolean; overload;
+    function Navigate(AControlClass: TControlClass; AData: TValue): Boolean; overload;
+    function Navigate(ASourcePage: string): Boolean; overload;
     procedure SendData(const APageName: string; const AData: TValue); overload;
     procedure SendData(AControlClass: TControlClass; const AData: TValue); overload;
     procedure GoBack();
     procedure GoForward();
-  published
+  public
     property History: TvnHistory read FHistory write FHistory;
     property Pages: TObjectList<TvnViewInfo> read FPages;
     property Parent: TControl read FParent write FParent;
-    property OnChangeState: TProc<string, TvnViewInfoStates> read FOnChangeState write FOnChangeState;
+    property OnChangeStateCallback: TProc<string, TvnViewInfoStates> read FOnChangeStateCallback
+      write FOnChangeStateCallback;
+    property OnNavigationFailedCallback: TProc<string> read FOnNavigationFailedCallback
+      write FOnNavigationFailedCallback;
     property Version: string read FVersion write FVersion;
+  end;
+
+  TvnOnChangeState = procedure(Sender: TViewNavigator; const APage: string; AState: TvnViewInfoStates) of object;
+
+  TViewNavigatorUI = class(TViewNavigator)
+  private
+    FOnChangeState: TvnOnChangeState;
+  public
+    constructor Create(AOwner: TComponent); override;
+  published
+    property History;
+    property Pages;
+    property OnChangeState: TvnOnChangeState read FOnChangeState write FOnChangeState;
   end;
 
 procedure Register;
@@ -193,7 +212,7 @@ implementation
 
 procedure Register;
 begin
-  RegisterComponents('Common controls', [TViewNavigator])
+  RegisterComponents('Common controls', [TViewNavigatorUI])
 end;
 
 {ViewInfoAttribute}
@@ -235,10 +254,11 @@ begin
     AView.Hide();
 end;
 
-procedure TViewNavigator.DoNavigate(APageInfo: TvnViewInfo);
+function TViewNavigator.DoNavigate(APageInfo: TvnViewInfo): Boolean;
 var
   LOldPage: TvnViewInfo;
 begin
+  Result := False;
   if FHistory.Current = APageInfo.Name then
     Exit;
   if TryFindPageInfo(FHistory.Current, LOldPage) then
@@ -247,6 +267,26 @@ begin
   end;
   FHistory.Navigate(APageInfo.Name);
   APageInfo.Navigate(Parent);
+  Result := True;
+end;
+
+procedure TViewNavigator.DoNavigationFailed(const APage: string);
+begin
+  if Assigned(OnNavigationFailedCallback) then
+    OnNavigationFailedCallback(APage);
+end;
+
+function TViewNavigator.DoSendData(APageInfo: TvnViewInfo; const AData: TValue): Boolean;
+var
+  LDataView: IvnView;
+begin
+  if Supports(APageInfo.Control, IvnView, LDataView) then
+  begin
+    LDataView.DataReceive(AData);
+    Result := True;
+  end
+  else
+    Result := False;
 end;
 
 procedure TViewNavigator.GoBack;
@@ -271,26 +311,41 @@ begin
     LForwardPage.Navigate(Parent);
 end;
 
-procedure TViewNavigator.Navigate(ASourcePage: string);
+function TViewNavigator.Navigate(ASourcePage: string): Boolean;
 var
   LPage: TvnViewInfo;
 begin
   if TryFindPageInfo(ASourcePage, LPage) then
-    DoNavigate(LPage);
+  begin
+    Result := DoNavigate(LPage);
+  end
+  else
+  begin
+    DoNavigationFailed(ASourcePage);
+    Result := False;
+  end;
 end;
 
-procedure TViewNavigator.Navigate(AControlClass: TControlClass);
+function TViewNavigator.Navigate(AControlClass: TControlClass): Boolean;
 var
   LPage: TvnViewInfo;
 begin
   if TryFindPageInfo(AControlClass, LPage) then
-    DoNavigate(LPage);
+  begin
+    Result := DoNavigate(LPage);
+  end
+  else
+  begin
+    DoNavigationFailed(AControlClass.ClassName);
+    Result := False;
+  end;
 end;
 
-procedure TViewNavigator.Navigate(AControlClass: TControlClass; AData: TValue);
+function TViewNavigator.Navigate(AControlClass: TControlClass; AData: TValue): Boolean;
 begin
-  Navigate(AControlClass);
-  SendData(AControlClass, AData);
+  Result := Navigate(AControlClass);
+  if Result then
+    SendData(AControlClass, AData);
 end;
 
 procedure TViewNavigator.RegisterFrame(AControlClasses: TArray<TControlClass>);
@@ -305,10 +360,10 @@ var
 begin
   lPageInfo := TvnViewInfo.Create(AControlClass);
   FPages.Add(lPageInfo);
-  lPageInfo.OnChangeState := procedure(AState: TvnViewInfoStates)
+  lPageInfo.OnChangeStateCallback := procedure(AState: TvnViewInfoStates)
     begin
-      if Assigned(FOnChangeState) then
-        FOnChangeState(lPageInfo.Name, AState);
+      if Assigned(FOnChangeStateCallback) then
+        FOnChangeStateCallback(lPageInfo.Name, AState);
     end;
   lPageInfo.DoNotifyCreate;
 end;
@@ -316,15 +371,9 @@ end;
 procedure TViewNavigator.SendData(AControlClass: TControlClass; const AData: TValue);
 var
   LView: TvnViewInfo;
-  LDataView: IvnView;
 begin
   if TryFindPageInfo(AControlClass, LView) then
-  begin
-    if Supports(LView.Control, IvnView, LDataView) then
-      LDataView.DataReceive(AData)
-    else
-      raise EArgumentException.Create(AControlClass.ClassName);
-  end
+    DoSendData(LView, AData)
   else
     raise EResNotFound.Create(AControlClass.ClassName);
 end;
@@ -332,15 +381,9 @@ end;
 procedure TViewNavigator.SendData(const APageName: string; const AData: TValue);
 var
   LView: TvnViewInfo;
-  LDataView: IvnView;
 begin
   if TryFindPageInfo(APageName, LView) then
-  begin
-    if Supports(LView.Control, IvnView, LDataView) then
-      LDataView.DataReceive(AData)
-    else
-      raise EArgumentException.Create(APageName);
-  end
+    DoSendData(LView, AData)
   else
     raise EResNotFound.Create(APageName);
 end;
@@ -411,8 +454,8 @@ end;
 procedure TvnViewInfo.DoChangeStates(AStates: TvnViewInfoStates);
 begin
   FStates := AStates;
-  if Assigned(OnChangeState) then
-    OnChangeState(AStates);
+  if Assigned(OnChangeStateCallback) then
+    OnChangeStateCallback(AStates);
 end;
 
 procedure TvnViewInfo.DoCreate;
@@ -571,6 +614,18 @@ end;
 procedure TvnHistory.SetCursor(const Value: Integer);
 begin
   FCursor := Value;
+end;
+
+{ TViewNavigatorUI }
+
+constructor TViewNavigatorUI.Create(AOwner: TComponent);
+begin
+  inherited Create(AOwner);
+  Self.OnChangeStateCallback := procedure(APage: string; AState: TvnViewInfoStates)
+    begin
+      if Assigned(FOnChangeState) then
+        FOnChangeState(Self, APage, AState);
+    end;
 end;
 
 end.
