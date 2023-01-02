@@ -10,6 +10,8 @@ uses
   System.Rtti;
 
 type
+  TValue = System.Rtti.TValue;
+
   IvnView = interface
     ['{E83C4096-6C79-4FB3-B23F-7D360A983A0D}']
     procedure DataReceive(AData: TValue);
