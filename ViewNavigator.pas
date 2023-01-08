@@ -163,6 +163,7 @@ type
     FOnChangeStateCallback: TProc<string, TvnViewInfoStates>;
     FVersion: string;
     FOnNavigationFailedCallback: TProc<string>;
+    FOnNavigateCallback: TProc<TvnViewInfo>;
   protected
     procedure DoNavigationFailed(const APage: string);
     procedure DoHideCurrentView;
@@ -190,6 +191,7 @@ type
       write FOnChangeStateCallback;
     property OnNavigationFailedCallback: TProc<string> read FOnNavigationFailedCallback
       write FOnNavigationFailedCallback;
+    property OnNavigateCallback: TProc<TvnViewInfo> read FOnNavigateCallback write FOnNavigateCallback;
     property Version: string read FVersion write FVersion;
   end;
 
@@ -267,6 +269,8 @@ begin
   end;
   FHistory.Navigate(APageInfo.Name);
   APageInfo.Navigate(Parent);
+  if Assigned(OnNavigateCallback) then
+    OnNavigateCallback(APageInfo);
   Result := True;
 end;
 
